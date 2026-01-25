@@ -16,10 +16,24 @@
             <p class="mt-2 text-neutral-600 text-sm md:text-base">Manage all artisan shops in a clean, modern view.</p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ Auth::guard('artisan')->check() ? route('artisans.dashboard') : route('admin.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+             @if(auth('web')->check())
+                <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+            @elseif(Auth::guard('artisan')->check())
+             <a href="{{ route('artisans.dashboard')  }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
                 <i class="fas fa-arrow-left"></i>
-                <span>Back</span>
+                <span>Back to Dashboard</span>
             </a>
+            @else
+                <button onclick="history.back()" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to list</span>
+                </button>
+            @endif
+
+
             @auth('artisan')
                 <a href="{{ route('shops.create') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold shadow-md hover:from-primary-700 hover:to-primary-600 transition">
                     <i class="fas fa-plus"></i>
@@ -93,6 +107,12 @@
                             <i class="fas fa-eye"></i>
                             <span>View</span>
                         </a>
+                        @if($shop->latitude && $shop->longitude)
+                            <a href="https://www.google.com/maps/?q={{ $shop->latitude }},{{ $shop->longitude }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-xs font-semibold text-accent-700 hover:text-accent-800">
+                                <i class="fas fa-map"></i>
+                                <span>Go to Shop</span>
+                            </a>
+                        @endif
                         @auth('artisan')
                             <div class="flex items-center gap-3">
                                 <a href="{{ route('shops.edit', $shop) }}" class="inline-flex items-center gap-1 px-3 py-1 rounded-md border border-primary-300 text-xs font-semibold text-primary-700 hover:bg-primary-50">

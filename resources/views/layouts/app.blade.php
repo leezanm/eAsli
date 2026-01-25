@@ -99,11 +99,11 @@
                                 <a href="{{ route('artisans.dashboard') }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition first:rounded-t-lg">
                                     <i class="fas fa-chart-line mr-2"></i>Dashboard
                                 </a>
-                                <a href="#" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
+                                <a href="{{ route('artisans.show', Auth::guard('artisan')->user()->id) }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
                                     <i class="fas fa-user-circle mr-2"></i>Profile
                                 </a>
-                                <a href="#" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
-                                    <i class="fas fa-cog mr-2"></i>Settings
+                                <a href="{{ route('artisans.change-password') }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
+                                    <i class="fas fa-key mr-2"></i>Change Password
                                 </a>
                                 <div class="border-t border-neutral-200"></div>
                                 <form action="{{ route('artisans.logout') }}" method="POST" class="block">
@@ -128,9 +128,9 @@
                                 <a href="{{ route('admin.dashboard') }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition first:rounded-t-lg">
                                     <i class="fas fa-cog mr-2"></i>Admin Panel
                                 </a>
-                                <a href="#" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
+                                {{-- <a href="#" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
                                     <i class="fas fa-chart-bar mr-2"></i>Reports
-                                </a>
+                                </a> --}}
                                 <div class="border-t border-neutral-200"></div>
                                 <form action="{{ route('admin.logout') }}" method="POST" class="block">
                                     @csrf
@@ -153,6 +153,9 @@
                             <div class="absolute right-0 mt-1 w-52 bg-white border border-neutral-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
                                 <a href="{{ route('customers.show', auth('customer')->user()) }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition first:rounded-t-lg">
                                     <i class="fas fa-receipt mr-2"></i>My Orders
+                                </a>
+                                <a href="{{ route('customers.history', auth('customer')->user()->id) }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
+                                    <i class="fas fa-history mr-2"></i>Order History
                                 </a>
                                 <div class="border-t border-neutral-200"></div>
                                 <form action="{{ route('customers.logout') }}" method="POST" class="block">
@@ -291,5 +294,6 @@
     </footer>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+    @yield('js')
 </body>
 </html>

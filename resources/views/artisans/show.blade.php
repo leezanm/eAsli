@@ -19,10 +19,17 @@
                 </p>
             </div>
             <div class="flex flex-wrap gap-3">
-                <a href="{{ route('artisans.index') }}" class="inline-flex items-center px-4 py-2 rounded-lg border border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-sm font-medium">
-                    <i class="fas fa-arrow-left mr-2"></i>
-                    Back to Artisans
-                </a>
+                @if(Auth::guard('artisan')->check())
+                    <a href="{{ route('artisans.dashboard') }}" class="inline-flex items-center px-4 py-2 rounded-lg border border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-sm font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Dashboard
+                    </a>
+                @else
+                    <a href="{{ route('artisans.index') }}" class="inline-flex items-center px-4 py-2 rounded-lg border border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-sm font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Artisans
+                    </a>
+                @endif
                 <a href="{{ route('artisans.edit', $artisan) }}" class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-yellow-100 text-sm font-semibold shadow">
                     <i class="fas fa-edit mr-2"></i>
                     Edit Artisan

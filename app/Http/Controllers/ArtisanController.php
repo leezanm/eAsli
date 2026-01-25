@@ -159,5 +159,44 @@ class ArtisanController extends Controller
     {
         Auth::guard('artisan')->logout();
         $request->session()->invalidate();
-        return redirect()->route('home')->with('success', 'You have been logged out.');    }
+        return redirect()->route('home')->with('success', 'You have been logged out.');
+    }
+
+    public function showChangePassword()
+    {
+        if (!Auth::guard('artisan')->check()) {
+            return redirect()->route('artisans.login');
+        }
+
+        return view('artisans.change-password');
+    }
+
+    public function updatePassword(Request $request)
+    {
+        if (!Auth::guard('artisan')->check()) {
+            return redirect()->route('artisans.login');
+        }
+
+        $validated = $request->validate([
+            'current_password' => 'required|string',
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required',
+        ]);
+
+        $artisan = Auth::guard('artisan')->user();
+
+        // Check if current password is correct
+        if (!Hash::check($validated['current_password'], $artisan->password)) {
+            return back()->withErrors([
+                'current_password' => 'The current password is incorrect.',
+            ])->onlyInput('password');
+        }
+
+        // Update password
+        $artisan->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return redirect()->route('artisans.dashboard')->with('success', 'Password updated successfully!');
+    }
 }

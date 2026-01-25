@@ -38,18 +38,26 @@
                     <p class="text-xs text-neutral-500 mt-2">Coordinates: {{ number_format($shop->latitude, 4) }}, {{ number_format($shop->longitude, 4) }}</p>
                 @endif
             </div>
-            <div class="space-y-2 text-sm text-neutral-700">
-                @if($shop->artisan)
-                    <p class="flex items-center gap-2">
-                        <i class="fas fa-user text-primary-600"></i>
-                        <span><span class="font-semibold">Artisan:</span> {{ $shop->artisan->name }}</span>
-                    </p>
-                @endif
-                @if($shop->phone)
-                    <p class="flex items-center gap-2">
-                        <i class="fas fa-phone text-primary-600"></i>
-                        <span>{{ $shop->phone }}</span>
-                    </p>
+            <div class="space-y-3">
+                <div class="space-y-2 text-sm text-neutral-700">
+                    @if($shop->artisan)
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-user text-primary-600"></i>
+                            <span><span class="font-semibold">Artisan:</span> {{ $shop->artisan->name }}</span>
+                        </p>
+                    @endif
+                    @if($shop->phone)
+                        <p class="flex items-center gap-2">
+                            <i class="fas fa-phone text-primary-600"></i>
+                            <span>{{ $shop->phone }}</span>
+                        </p>
+                    @endif
+                </div>
+                @if($shop->latitude && $shop->longitude)
+                    <a href="https://www.google.com/maps/?q={{ $shop->latitude }},{{ $shop->longitude }}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-full gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-accent-500 to-accent-600 text-white text-sm font-semibold shadow-md hover:from-accent-600 hover:to-accent-700 transition">
+                        <i class="fas fa-map"></i>
+                        <span>Open on Google Maps</span>
+                    </a>
                 @endif
             </div>
         </div>

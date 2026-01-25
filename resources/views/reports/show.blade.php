@@ -151,16 +151,264 @@
             </div>
         </div>
 
-        <!-- Raw content -->
-        <div class="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 mb-6">
-            <div class="flex items-center justify-between mb-3">
-                <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wide flex items-center gap-2">
-                    <i class="fas fa-code text-primary-600"></i>
-                    Raw Report Data (JSON)
+        <!-- Detailed Report Data -->
+        @if($report->type === 'sales' && isset($content['sales']))
+            <!-- Sales Report Details -->
+            <div class="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 mb-6">
+                <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+                    <i class="fas fa-receipt text-primary-600"></i>
+                    Sales Transactions
                 </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-neutral-200">
+                                <th class="px-4 py-3 text-left font-semibold text-neutral-700">Date</th>
+                                <th class="px-4 py-3 text-left font-semibold text-neutral-700">Product</th>
+                                <th class="px-4 py-3 text-left font-semibold text-neutral-700">Customer</th>
+                                <th class="px-4 py-3 text-left font-semibold text-neutral-700">Artisan</th>
+                                <th class="px-4 py-3 text-right font-semibold text-neutral-700">Qty</th>
+                                <th class="px-4 py-3 text-right font-semibold text-neutral-700">Unit Price</th>
+                                <th class="px-4 py-3 text-right font-semibold text-neutral-700">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-neutral-100">
+                            @forelse($content['sales'] as $sale)
+                                <tr class="hover:bg-neutral-50">
+                                    <td class="px-4 py-3 text-neutral-600">
+                                        @if(is_object($sale))
+                                            {{ $sale->created_at?->format('d M Y') ?? '-' }}
+                                        @else
+                                            {{ isset($sale['created_at']) ? \Carbon\Carbon::parse($sale['created_at'])->format('d M Y') : '-' }}
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-neutral-900 font-medium">
+                                        @if(is_object($sale) && $sale->product)
+                                            {{ $sale->product->name ?? '-' }}
+                                        @elseif(isset($sale['product']['name']))
+                                            {{ $sale['product']['name'] }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-neutral-600">
+                                        @if(is_object($sale) && $sale->customer)
+                                            {{ $sale->customer->name ?? '-' }}
+                                        @elseif(isset($sale['customer']['name']))
+                                            {{ $sale['customer']['name'] }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-neutral-600">
+                                        @if(is_object($sale) && $sale->artisan)
+                                            {{ $sale->artisan->name ?? '-' }}
+                                        @elseif(isset($sale['artisan']['name']))
+                                            {{ $sale['artisan']['name'] }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-right text-neutral-600">
+                                        @if(is_object($sale))
+                                            {{ $sale->quantity ?? '-' }}
+                                        @else
+                                            {{ $sale['quantity'] ?? '-' }}
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-right text-neutral-600">
+                                        @if(is_object($sale))
+                                            RM {{ number_format($sale->unit_price ?? 0, 2) }}
+                                        @else
+                                            RM {{ number_format($sale['unit_price'] ?? 0, 2) }}
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-right font-semibold text-primary-700">
+                                        @if(is_object($sale))
+                                            RM {{ number_format($sale->total_price ?? 0, 2) }}
+                                        @else
+                                            RM {{ number_format($sale['total_price'] ?? 0, 2) }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="px-4 py-8 text-center text-neutral-500">No sales data available</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <pre class="text-xs bg-neutral-950 text-neutral-50 rounded-xl p-4 overflow-x-auto"><code>{{ json_encode($content, JSON_PRETTY_PRINT) }}</code></pre>
-        </div>
+        @elseif($report->type === 'stock' && isset($content['low_stock_products']))
+            <!-- Stock Report Details -->
+            <div class="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 mb-6">
+                <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+                    <i class="fas fa-box text-amber-600"></i>
+                    Product Inventory
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-neutral-200">
+                                <th class="px-4 py-3 text-left font-semibold text-neutral-700">Product Name</th>
+                                <th class="px-4 py-3 text-left font-semibold text-neutral-700">Category</th>
+                                <th class="px-4 py-3 text-right font-semibold text-neutral-700">Current Stock</th>
+                                <th class="px-4 py-3 text-right font-semibold text-neutral-700">Price</th>
+                                <th class="px-4 py-3 text-center font-semibold text-neutral-700">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-neutral-100">
+                            @forelse($content['low_stock_products'] as $product)
+                                <tr class="hover:bg-neutral-50">
+                                    <td class="px-4 py-3 text-neutral-900 font-medium">
+                                        @if(is_object($product))
+                                            {{ $product->name ?? '-' }}
+                                        @else
+                                            {{ $product['name'] ?? '-' }}
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-neutral-600">
+                                        @if(is_object($product))
+                                            {{ $product->category ?? '-' }}
+                                        @else
+                                            {{ $product['category'] ?? '-' }}
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-right font-semibold">
+                                        @php
+                                            $stock = is_object($product) ? $product->stock : $product['stock'];
+                                        @endphp
+                                        <span class="inline-flex px-3 py-1 rounded-full {{ $stock < 5 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700' }}">
+                                            {{ $stock }}
+                                        </span>
+                                    </td>
+                                    <td class="px-4 py-3 text-right text-neutral-600">
+                                        @if(is_object($product))
+                                            RM {{ number_format($product->price ?? 0, 2) }}
+                                        @else
+                                            RM {{ number_format($product['price'] ?? 0, 2) }}
+                                        @endif
+                                    </td>
+                                    <td class="px-4 py-3 text-center">
+                                        @php
+                                            $stock = is_object($product) ? $product->stock : $product['stock'];
+                                        @endphp
+                                        @if($stock < 5)
+                                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                                <i class="fas fa-exclamation-circle"></i>
+                                                Critical
+                                            </span>
+                                        @elseif($stock < 10)
+                                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
+                                                <i class="fas fa-triangle-exclamation"></i>
+                                                Low
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                                <i class="fas fa-check-circle"></i>
+                                                Good
+                                            </span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center text-neutral-500">All products have adequate stock</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @elseif($report->type === 'performance' && isset($content['artisans']))
+            <!-- Performance Report Details -->
+            <div class="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 mb-6">
+                <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wide mb-4 flex items-center gap-2">
+                    <i class="fas fa-chart-line text-primary-600"></i>
+                    Artisan Performance
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @forelse($content['artisans'] as $artisan)
+                        <div class="bg-neutral-50 rounded-xl border border-neutral-200 p-4">
+                            <div class="flex items-start justify-between mb-3">
+                                <div>
+                                    <h3 class="font-semibold text-neutral-900">
+                                        @if(is_object($artisan))
+                                            {{ $artisan->name ?? '-' }}
+                                        @else
+                                            {{ $artisan['name'] ?? '-' }}
+                                        @endif
+                                    </h3>
+                                    <p class="text-xs text-neutral-500 mt-1">
+                                        @if(is_object($artisan))
+                                            {{ $artisan->specialty ?? '-' }}
+                                        @else
+                                            {{ $artisan['specialty'] ?? '-' }}
+                                        @endif
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-neutral-600">Total Sales:</span>
+                                    <span class="font-semibold text-neutral-900">
+                                        @if(is_object($artisan))
+                                            {{ $artisan->total_sales ?? 0 }}
+                                        @else
+                                            {{ $artisan['total_sales'] ?? 0 }}
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-neutral-600">Total Revenue:</span>
+                                    <span class="font-semibold text-primary-700">
+                                        @if(is_object($artisan))
+                                            RM {{ number_format($artisan->total_revenue ?? 0, 2) }}
+                                        @else
+                                            RM {{ number_format($artisan['total_revenue'] ?? 0, 2) }}
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-neutral-600">Total Quantity:</span>
+                                    <span class="font-semibold text-neutral-900">
+                                        @if(is_object($artisan))
+                                            {{ $artisan->total_quantity ?? 0 }}
+                                        @else
+                                            {{ $artisan['total_quantity'] ?? 0 }}
+                                        @endif
+                                    </span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-neutral-600">Avg. Transaction:</span>
+                                    <span class="font-semibold text-neutral-900">
+                                        @if(is_object($artisan))
+                                            RM {{ number_format($artisan->average_transaction ?? 0, 2) }}
+                                        @else
+                                            RM {{ number_format($artisan['average_transaction'] ?? 0, 2) }}
+                                        @endif
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="col-span-2 px-4 py-8 text-center text-neutral-500">No performance data available</div>
+                    @endforelse
+                </div>
+            </div>
+        @else
+            <!-- Fallback: Raw data for unknown report types -->
+            <div class="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 mb-6">
+                <div class="flex items-center justify-between mb-3">
+                    <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wide flex items-center gap-2">
+                        <i class="fas fa-code text-primary-600"></i>
+                        Raw Report Data (JSON)
+                    </h2>
+                </div>
+                <pre class="text-xs bg-neutral-950 text-neutral-50 rounded-xl p-4 overflow-x-auto"><code>{{ json_encode($content, JSON_PRETTY_PRINT) }}</code></pre>
+            </div>
+        @endif
     </div>
 </div>
 @endsection

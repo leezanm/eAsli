@@ -56,9 +56,18 @@ class ProductController extends Controller
             'image_path' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
+        // Set default status for new products
+        $validated['status'] = 'available';
+
         if ($request->hasFile('image_path')) {
-            // Store on the public disk so it is web-accessible via Storage::url
-            $validated['image_path'] = $request->file('image_path')->store('products', 'public');
+            try {
+                // Store on the public disk so it is web-accessible
+                $file = $request->file('image_path');
+                $path = $file->store('products', 'public');
+                $validated['image_path'] = $path;
+            } catch (\Exception $e) {
+                return back()->withErrors(['image_path' => 'Failed to upload image. Please try again.'])->withInput();
+            }
         }
 
         Product::create($validated);
@@ -104,12 +113,19 @@ class ProductController extends Controller
         ]);
 
         if ($request->hasFile('image_path')) {
-            // Optionally remove old image
-            if ($product->image_path) {
-                Storage::disk('public')->delete($product->image_path);
-            }
+            try {
+                // Delete old image if exists
+                if ($product->image_path) {
+                    Storage::disk('public')->delete($product->image_path);
+                }
 
-            $validated['image_path'] = $request->file('image_path')->store('products', 'public');
+                // Store new image
+                $file = $request->file('image_path');
+                $path = $file->store('products', 'public');
+                $validated['image_path'] = $path;
+            } catch (\Exception $e) {
+                return back()->withErrors(['image_path' => 'Failed to upload image. Please try again.'])->withInput();
+            }
         } else {
             // Do not overwrite existing image_path with null if no new image uploaded
             unset($validated['image_path']);

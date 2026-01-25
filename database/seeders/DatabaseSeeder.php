@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         // Run all seeders
         $this->call([
+            StateSeeder::class,
             AdminSeeder::class,
             ArtisanSeeder::class,
             ShopSeeder::class,

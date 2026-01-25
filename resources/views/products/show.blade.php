@@ -85,21 +85,30 @@
                     </div>
                 @endif
 
-                @auth('customer')
-                    <div class="mt-6 border-t border-neutral-200 pt-4">
-                        <form method="POST" action="{{ route('cart.add', $product) }}" class="flex items-center gap-3">
-                            @csrf
-                            <div>
-                                <label for="quantity" class="block text-xs font-semibold text-neutral-700 uppercase tracking-wide mb-1">Quantity</label>
-                                <input type="number" id="quantity" name="quantity" min="1" value="1" class="w-20 px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200">
+                <div class="mt-6 border-t border-neutral-200 pt-4">
+                    {{-- Show add to cart only for customers and guests --}}
+                    @if(Auth::guard('customer')->check() || (Auth::guest() && !Auth::guard('artisan')->check()))
+                        @if($product->status === 'available' && $product->stock > 0)
+                            <form method="POST" action="{{ route('cart.add', $product) }}" class="flex items-center gap-3">
+                                @csrf
+                                <div>
+                                    <label for="quantity" class="block text-xs font-semibold text-neutral-700 uppercase tracking-wide mb-1">Quantity</label>
+                                    <input type="number" id="quantity" name="quantity" min="1" max="{{ $product->stock }}" value="1" class="w-20 px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:outline-none focus:border-primary-500 focus:ring-2 focus:ring-primary-200">
+                                </div>
+                                <button type="submit" class="inline-flex items-center justify-center gap-2 px-5 py-3 mt-4 rounded-lg bg-gradient-to-r from-accent-500 to-accent-600 text-white text-sm font-semibold shadow-md hover:from-accent-600 hover:to-accent-700 transition">
+                                    <i class="fas fa-cart-plus"></i>
+                                    <span>Add to Cart</span>
+                                </button>
+                            </form>
+                        @else
+                            <div class="p-4 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-sm font-medium flex items-center gap-2">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <span>This product is currently unavailable</span>
                             </div>
-                            <button type="submit" class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-accent-500 to-accent-600 text-white text-sm font-semibold shadow-md hover:from-accent-600 hover:to-accent-700 transition">
-                                <i class="fas fa-cart-plus"></i>
-                                <span>Add to Cart</span>
-                            </button>
-                        </form>
-                    </div>
-                @endauth
+                        @endif
+                   
+                    @endif
+                </div>
             </div>
         </div>
     </div>

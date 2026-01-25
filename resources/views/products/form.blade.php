@@ -140,13 +140,54 @@
                         <label for="image_path" class="block text-sm font-bold text-primary-900 mb-2 uppercase tracking-wide">
                             <i class="fas fa-image text-primary-600 mr-2"></i>Product Image
                         </label>
-                        <input type="file" id="image_path" name="image_path" accept="image/*"
-                               class="w-full px-4 py-3 border-2 border-dashed border-neutral-300 rounded-lg bg-neutral-50 hover:border-primary-400 hover:bg-primary-50/40 transition @error('image_path') border-red-500 bg-red-50 @enderror">
+
+                        <!-- Image Preview -->
+                        @if(isset($product) && $product->image_path)
+                            <div class="mb-4 p-4 bg-neutral-100 rounded-lg border border-neutral-300">
+                                <p class="text-xs font-semibold text-neutral-700 mb-2">Current Image:</p>
+                                <img src="{{ Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="h-40 w-40 object-cover rounded-lg">
+                            </div>
+                        @endif
+
+                        <!-- File Input -->
+                        <div class="relative">
+                            <input type="file" id="image_path" name="image_path" accept="image/*"
+                                   class="w-full px-4 py-3 border-2 border-dashed border-neutral-300 rounded-lg bg-neutral-50 hover:border-primary-400 hover:bg-primary-50/40 transition cursor-pointer @error('image_path') border-red-500 bg-red-50 @enderror"
+                                   onchange="previewImage(this)">
+                            <p class="mt-2 text-xs text-neutral-500">
+                                <i class="fas fa-cloud-upload-alt mr-1"></i>
+                                Drag and drop or click to upload. Max 2MB (JPEG, PNG, GIF)
+                            </p>
+                        </div>
+
+                        <!-- Image Preview on Upload -->
+                        <div id="preview-container" class="mt-4" style="display:none;">
+                            <p class="text-xs font-semibold text-neutral-700 mb-2">Preview:</p>
+                            <img id="preview-image" src="" alt="Preview" class="h-40 w-40 object-cover rounded-lg border-2 border-primary-300">
+                        </div>
+
                         @error('image_path')
-                            <span class="text-red-600 text-sm mt-1 flex items-center"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
+                            <span class="text-red-600 text-sm mt-2 flex items-center"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
                         @enderror
-                        <p class="mt-1 text-xs text-neutral-500">Recommended: clear photo, max 2MB (JPEG, PNG, GIF).</p>
                     </div>
+
+                    <script>
+                        function previewImage(input) {
+                            const preview = document.getElementById('preview-container');
+                            const previewImage = document.getElementById('preview-image');
+
+                            if (input.files && input.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    previewImage.src = e.target.result;
+                                    preview.style.display = 'block';
+                                };
+                                reader.readAsDataURL(input.files[0]);
+                            } else {
+                                preview.style.display = 'none';
+                            }
+                        }
+                    </script>
 
                     <div class="flex flex-col md:flex-row gap-4 mb-2">
                         <button type="submit" class="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105 duration-300 uppercase tracking-wide text-center">

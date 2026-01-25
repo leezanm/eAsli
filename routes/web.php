@@ -9,10 +9,26 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AdminController;
+use App\Models\Product;
+use App\Models\Shop;
+use App\Models\State;
 
 // Home Page
 Route::get('/', function () {
-    return view('welcome');
+    $shops = Shop::where('status', 'active')
+        ->with(['artisan.products'])
+        ->get();
+
+    $states = State::orderBy('name')
+        ->pluck('name');
+
+    $categories = Product::whereNotNull('category')
+        ->distinct()
+        ->pluck('category')
+        ->sort()
+        ->values();
+
+    return view('welcome', compact('shops', 'states', 'categories'));
 })->name('home');
 
 // Admin Routes
@@ -30,6 +46,8 @@ Route::prefix('artisans')->group(function () {
     Route::post('/authenticate', [ArtisanController::class, 'authenticate'])->name('artisans.authenticate');
     Route::post('/logout', [ArtisanController::class, 'logout'])->name('artisans.logout');
     Route::get('/dashboard', [ArtisanController::class, 'dashboard'])->name('artisans.dashboard');
+    Route::get('/change-password', [ArtisanController::class, 'showChangePassword'])->name('artisans.change-password');
+    Route::put('/change-password', [ArtisanController::class, 'updatePassword'])->name('artisans.update-password');
     Route::get('/create', [ArtisanController::class, 'create'])->name('artisans.create');
     Route::post('/', [ArtisanController::class, 'store'])->name('artisans.store');
     Route::get('/{artisan}', [ArtisanController::class, 'show'])->name('artisans.show');
@@ -43,6 +61,7 @@ Route::prefix('shops')->group(function () {
     Route::get('/', [ShopController::class, 'index'])->name('shops.index');
     Route::get('/map', [ShopController::class, 'map'])->name('shops.map');
     Route::get('/nearby', [ShopController::class, 'nearbyShops'])->name('shops.nearby');
+    Route::get('/filter', [ShopController::class, 'filterShops'])->name('shops.filter');
     Route::get('/create', [ShopController::class, 'create'])->name('shops.create');
     Route::post('/', [ShopController::class, 'store'])->name('shops.store');
     Route::get('/{shop}', [ShopController::class, 'show'])->name('shops.show');

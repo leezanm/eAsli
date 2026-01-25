@@ -87,13 +87,19 @@
                         <label for="state" class="block text-sm font-bold text-primary-900 mb-2 uppercase tracking-wide">
                             <i class="fas fa-flag text-primary-600 mr-2"></i>State / Region
                         </label>
-                        <input type="text" id="state" name="state"
-                               class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition text-neutral-900 font-medium @error('state') border-red-500 @enderror"
-                               value="{{ old('state', $shop->state ?? '') }}">
+                        <select id="state" name="state"
+                                class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition text-neutral-900 font-medium @error('state') border-red-500 @enderror">
+                            <option value="">-- Select State (Negeri) --</option>
+                            @isset($states)
+                                @foreach($states as $state)
+                                    <option value="{{ $state }}" {{ old('state', $shop->state ?? '') === $state ? 'selected' : '' }}>{{ $state }}</option>
+                                @endforeach
+                            @endisset
+                        </select>
                         @error('state')
                             <span class="text-red-600 text-sm mt-1 flex items-center"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
                         @enderror
-                        <p class="mt-1 text-xs text-neutral-500">Example: Selangor, Penang, Johor, etc.</p>
+                        <p class="mt-1 text-xs text-neutral-500">Choose the negeri where your shop is located.</p>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

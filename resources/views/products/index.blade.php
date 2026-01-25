@@ -16,10 +16,22 @@
             <p class="mt-2 text-neutral-600 text-sm md:text-base">Manage all your products in one elegant view.</p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ Auth::guard('artisan')->check() ? route('artisans.dashboard') : route('admin.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
-                <i class="fas fa-arrow-left"></i>
-                <span>Back</span>
-            </a>
+            @if(auth('web')->check())
+                <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+            @elseif(Auth::guard('artisan')->check() )
+                <a href="{{ route('artisans.dashboard')  }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Dashboard</span>
+                </a>
+            @else
+                <button onclick="location.href='{{ url('/') }}'" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Home</span>
+                </button>
+            @endif
             @auth('artisan')
                 <a href="{{ route('products.create') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold shadow-md hover:from-primary-700 hover:to-primary-600 transition">
                     <i class="fas fa-plus"></i>
@@ -114,7 +126,7 @@
                             <i class="fas fa-eye"></i>
                             <span>View</span>
                         </a>
-                        @auth('customer')
+                        @if(!auth('artisan')->check() && !auth('web')->check())
                             <form method="POST" action="{{ route('cart.add', $product) }}" class="inline-flex">
                                 @csrf
                                 <input type="hidden" name="quantity" value="1">
@@ -122,7 +134,7 @@
                                     <i class="fas fa-cart-plus mr-1"></i> Add
                                 </button>
                             </form>
-                        @endauth
+                        @endif
 
                         @auth('artisan')
                             <div class="flex items-center gap-3">

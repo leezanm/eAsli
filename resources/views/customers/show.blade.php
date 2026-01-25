@@ -19,10 +19,17 @@
             </p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
-            <a href="{{ route('customers.index') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+            @if(Auth::guard('customer')->check())
+             <a href="{{ route('home') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
                 <i class="fas fa-arrow-left"></i>
-                <span>Back to Customers</span>
+                <span>Home</span>
             </a>
+            @else
+                <a href="{{ route('customers.index') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Back to Customers</span>
+                </a>
+            @endif
             <a href="{{ route('customers.edit', $customer) }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-600 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 transition">
                 <i class="fas fa-user-edit"></i>
                 <span>Edit Customer</span>

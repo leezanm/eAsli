@@ -143,4 +143,22 @@ class CustomerController extends Controller
 
         return redirect()->route('home')->with('success', 'You have been logged out.');
     }
+
+    public function history(Customer $customer)
+    {
+        // Only allow customers to view their own history
+        if (Auth::guard('customer')->check() && Auth::guard('customer')->id() !== $customer->id) {
+            abort(403);
+        }
+
+        $sales = $customer->sales()
+            ->with(['product', 'artisan'])
+            ->latest('sale_date')
+            ->paginate(15);
+
+        $totalSpent = $customer->getTotalSpent();
+        $totalOrders = $customer->getTotalOrders();
+
+        return view('customers.history', compact('customer', 'sales', 'totalSpent', 'totalOrders'));
+    }
 }

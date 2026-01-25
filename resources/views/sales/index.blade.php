@@ -21,7 +21,7 @@
             <div class="flex flex-wrap gap-3">
                 <a href="{{ Auth::guard('artisan')->check() ? route('artisans.dashboard') : route('admin.dashboard') }}" class="inline-flex items-center px-4 py-2 rounded-lg border border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-sm font-medium">
                     <i class="fas fa-arrow-left mr-2"></i>
-                    Back
+                    Back to Dashboard
                 </a>
                 @auth('artisan')
                     <a href="{{ route('sales.create') }}" class="inline-flex items-center px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold shadow">

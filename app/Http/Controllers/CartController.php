@@ -54,10 +54,6 @@ class CartController extends Controller
 
     public function add(Request $request, Product $product)
     {
-        if (!Auth::guard('customer')->check()) {
-            return redirect()->route('customers.login')->with('error', 'Please log in as a customer to add items to your cart.');
-        }
-
         $validated = $request->validate([
             'quantity' => 'nullable|integer|min:1',
         ]);
@@ -115,48 +111,52 @@ class CartController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
-        $customer = Auth::guard('customer')->user();
-        $productIds = array_keys($cart);
-        $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
+        try {
+            $customer = Auth::guard('customer')->user();
+            $productIds = array_keys($cart);
+            $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
 
-        DB::transaction(function () use ($cart, $products, $customer) {
-            foreach ($cart as $productId => $item) {
-                $product = $products->get($productId);
-                if (!$product) {
-                    continue;
+            DB::transaction(function () use ($cart, $products, $customer) {
+                foreach ($cart as $productId => $item) {
+                    $product = $products->get($productId);
+                    if (!$product) {
+                        continue;
+                    }
+
+                    $quantity = max(1, (int) ($item['quantity'] ?? 1));
+                    if ($quantity > $product->stock) {
+                        $quantity = $product->stock;
+                    }
+                    if ($quantity <= 0) {
+                        continue;
+                    }
+
+                    $unitPrice = $product->price;
+                    $totalPrice = $unitPrice * $quantity;
+
+                    Sale::create([
+                        'artisan_id' => $product->artisan_id,
+                        'product_id' => $product->id,
+                        'customer_id' => $customer->id,
+                        'quantity' => $quantity,
+                        'unit_price' => $unitPrice,
+                        'total_price' => $totalPrice,
+                        'sale_date' => now()->toDateString(),
+                        'payment_status' => 'paid',
+                        'notes' => 'Online cart purchase',
+                    ]);
+
+                    $product->decreaseStock($quantity);
                 }
+            });
 
-                $quantity = max(1, (int) ($item['quantity'] ?? 1));
-                if ($quantity > $product->stock) {
-                    $quantity = $product->stock;
-                }
-                if ($quantity <= 0) {
-                    continue;
-                }
+            // Clear cart after successful checkout
+            $this->saveCart([]);
 
-                $unitPrice = $product->price;
-                $totalPrice = $unitPrice * $quantity;
-
-                Sale::create([
-                    'artisan_id' => $product->artisan_id,
-                    'product_id' => $product->id,
-                    'customer_id' => $customer->id,
-                    'quantity' => $quantity,
-                    'unit_price' => $unitPrice,
-                    'total_price' => $totalPrice,
-                    'sale_date' => now()->toDateString(),
-                    'payment_status' => 'paid',
-                    'notes' => 'Online cart purchase',
-                ]);
-
-                $product->decreaseStock($quantity);
-            }
-        });
-
-        // Clear cart after successful checkout
-        $this->saveCart([]);
-
-        return redirect()->route('customers.history', Auth::guard('customer')->id())
-            ->with('success', 'Thank you! Your order has been placed.');
+            return redirect()->route('customers.history', Auth::guard('customer')->user()->id)
+                ->with('success', 'Thank you! Your order has been placed successfully.');
+        } catch (\Exception $e) {
+            return redirect()->route('cart.index')->withErrors(['checkout' => 'An error occurred during checkout. Please try again.']);
+        }
     }
 }
