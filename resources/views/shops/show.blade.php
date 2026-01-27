@@ -89,13 +89,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($products as $product)
                         <div class="bg-white rounded-xl shadow-md border border-neutral-200 overflow-hidden flex flex-col">
-                            <div class="h-40 bg-gradient-to-br from-primary-100 to-secondary-100 flex items-center justify-center">
+                            <div class="h-40 bg-gradient-to-br from-primary-100 to-secondary-100">
                                 @if($product->image_path)
                                     <img src="{{ Storage::url($product->image_path) }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fas fa-box text-4xl text-neutral-400"></i>
-                            @endif
-                        </div>
+                                @else
+                                    <div class="w-full h-full flex items-center justify-center">
+                                        <i class="fas fa-box text-4xl text-neutral-400"></i>
+                                    </div>
+                                @endif
+                            </div>
                         <div class="p-4 flex-1 flex flex-col">
                             <h3 class="font-semibold text-neutral-900 mb-1 line-clamp-2">{{ $product->name }}</h3>
                             @if($product->price)

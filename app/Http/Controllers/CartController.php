@@ -111,12 +111,68 @@ class CartController extends Controller
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
+        $productIds = array_keys($cart);
+        $products = $productIds ? Product::whereIn('id', $productIds)->get()->keyBy('id') : collect();
+
+        $items = [];
+        $total = 0;
+
+        foreach ($cart as $productId => $item) {
+            $product = $products->get($productId);
+            if (!$product) {
+                continue;
+            }
+
+            $quantity = max(1, (int) ($item['quantity'] ?? 1));
+            $unitPrice = $product->price;
+            $lineTotal = $unitPrice * $quantity;
+            $total += $lineTotal;
+
+            $items[] = [
+                'product' => $product,
+                'quantity' => $quantity,
+                'unit_price' => $unitPrice,
+                'total' => $lineTotal,
+            ];
+        }
+
+        return view('cart.checkout', compact('items', 'total'));
+    }
+
+    public function checkoutProcess(Request $request)
+    {
+        if (!Auth::guard('customer')->check()) {
+            return redirect()->route('customers.login')->with('error', 'Please log in as a customer to checkout.');
+        }
+
+        // Validate form inputs
+        $validated = $request->validate([
+            'bill_name' => 'required|string|max:255',
+            'bill_phone' => 'required|string|max:20',
+            'bill_email' => 'required|email',
+            'bill_address' => 'required|string|max:500',
+            'recv_name' => 'required|string|max:255',
+            'recv_phone' => 'required|string|max:20',
+            'recv_email' => 'required|email',
+            'recv_address' => 'required|string|max:500',
+            'payment_method' => 'required|in:card,tng,shopee,grab',
+            'agree_terms' => 'required|accepted',
+        ]);
+
+        $cart = $this->getCart();
+        if (empty($cart)) {
+            return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
+        }
+
         try {
             $customer = Auth::guard('customer')->user();
             $productIds = array_keys($cart);
             $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
 
-            DB::transaction(function () use ($cart, $products, $customer) {
+            $latestSaleId = null;
+            $orderNumber = 'ORD-' . now()->format('YmdHis') . '-' . $customer->id;
+
+            DB::transaction(function () use ($cart, $products, $customer, $validated, &$latestSaleId, $orderNumber) {
                 foreach ($cart as $productId => $item) {
                     $product = $products->get($productId);
                     if (!$product) {
@@ -134,7 +190,8 @@ class CartController extends Controller
                     $unitPrice = $product->price;
                     $totalPrice = $unitPrice * $quantity;
 
-                    Sale::create([
+                    $sale = Sale::create([
+                        'order_number' => $orderNumber,
                         'artisan_id' => $product->artisan_id,
                         'product_id' => $product->id,
                         'customer_id' => $customer->id,
@@ -143,8 +200,22 @@ class CartController extends Controller
                         'total_price' => $totalPrice,
                         'sale_date' => now()->toDateString(),
                         'payment_status' => 'paid',
+                        'payment_method' => $validated['payment_method'],
+                        'billing_name' => $validated['bill_name'],
+                        'billing_phone' => $validated['bill_phone'],
+                        'billing_email' => $validated['bill_email'],
+                        'billing_address' => $validated['bill_address'],
+                        'receiver_name' => $validated['recv_name'],
+                        'receiver_phone' => $validated['recv_phone'],
+                        'receiver_email' => $validated['recv_email'],
+                        'receiver_address' => $validated['recv_address'],
                         'notes' => 'Online cart purchase',
                     ]);
+
+                    // Keep track of the first sale ID to show as current order
+                    if ($latestSaleId === null) {
+                        $latestSaleId = $sale->id;
+                    }
 
                     $product->decreaseStock($quantity);
                 }
@@ -153,10 +224,11 @@ class CartController extends Controller
             // Clear cart after successful checkout
             $this->saveCart([]);
 
-            return redirect()->route('customers.history', Auth::guard('customer')->user()->id)
+            // Redirect to order confirmation/detail page showing the latest order
+            return redirect()->route('customers.order', [$customer->id, $latestSaleId])
                 ->with('success', 'Thank you! Your order has been placed successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('cart.index')->withErrors(['checkout' => 'An error occurred during checkout. Please try again.']);
+            return redirect()->route('cart.checkout')->withErrors(['checkout' => 'An error occurred during checkout. Please try again.']);
         }
     }
 }

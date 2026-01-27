@@ -28,7 +28,13 @@ Route::get('/', function () {
         ->sort()
         ->values();
 
-    return view('welcome', compact('shops', 'states', 'categories'));
+    // Get 3 random products for splash popup
+    $randomProducts = Product::with('artisan')
+        ->inRandomOrder()
+        ->limit(3)
+        ->get();
+
+    return view('welcome', compact('shops', 'states', 'categories', 'randomProducts'));
 })->name('home');
 
 // Admin Routes
@@ -73,6 +79,7 @@ Route::prefix('shops')->group(function () {
 // Product Routes
 Route::prefix('products')->group(function () {
     Route::get('/', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/shop', [ProductController::class, 'shop'])->name('products.shop');
     Route::get('/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/', [ProductController::class, 'store'])->name('products.store');
     Route::get('/{product}', [ProductController::class, 'show'])->name('products.show');
@@ -90,7 +97,8 @@ Route::prefix('cart')->group(function () {
     Route::post('/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::post('/update/{product}', [CartController::class, 'update'])->name('cart.update');
     Route::post('/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
-    Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/checkout', [CartController::class, 'checkoutProcess'])->name('cart.process');
 });
 
 // Customer Routes
@@ -109,6 +117,7 @@ Route::prefix('customers')->group(function () {
     Route::put('/{customer}', [CustomerController::class, 'update'])->name('customers.update');
     Route::delete('/{customer}', [CustomerController::class, 'destroy'])->name('customers.destroy');
     Route::get('/{customer}/history', [CustomerController::class, 'history'])->name('customers.history');
+    Route::get('/{customer}/order/{sale}', [CustomerController::class, 'viewOrder'])->name('customers.order');
     Route::get('/top/customers', [CustomerController::class, 'topCustomers'])->name('customers.top');
 });
 
@@ -134,3 +143,6 @@ Route::prefix('reports')->group(function () {
     Route::post('/stock', [ReportController::class, 'generateStockReport'])->name('reports.stock');
     Route::post('/performance', [ReportController::class, 'generatePerformanceReport'])->name('reports.performance');
 });
+
+
+Route::get('/products/shop', [ProductController::class, 'shop'])->name('products.shop');

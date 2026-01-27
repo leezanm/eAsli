@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Sale;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -49,13 +50,25 @@ class CustomerController extends Controller
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:100',
             'postal_code' => 'nullable|string|max:10',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed',
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
 
-        Customer::create($validated);
-        return redirect()->route('customers.index')->with('success', 'Customer registered successfully');
+        $customer = Customer::create($validated);
+
+        // Auto-login the customer after registration
+        Auth::guard('customer')->login($customer);
+
+        // Get redirect URL from request, default to home
+        $redirectTo = $request->input('redirect_to', route('home'));
+
+        // Validate the redirect URL to prevent open redirect vulnerabilities
+        if (!filter_var($redirectTo, FILTER_VALIDATE_URL)) {
+            $redirectTo = route('home');
+        }
+
+        return redirect($redirectTo)->with('success', 'Account created successfully! Welcome to eAsli!');
     }
 
     public function show(Customer $customer)
@@ -160,5 +173,31 @@ class CustomerController extends Controller
         $totalOrders = $customer->getTotalOrders();
 
         return view('customers.history', compact('customer', 'sales', 'totalSpent', 'totalOrders'));
+    }
+
+    public function viewOrder(Customer $customer, Sale $sale)
+    {
+        // Only allow customers to view their own order
+        if (Auth::guard('customer')->check() && Auth::guard('customer')->id() !== $customer->id) {
+            abort(403);
+        }
+
+        // Verify the sale belongs to this customer
+        if ($sale->customer_id !== $customer->id) {
+            abort(404);
+        }
+
+        $sale = $sale->load(['product', 'artisan']);
+
+        // Get all sales with the same order number to display all items from this order
+        $allSales = Sale::where('order_number', $sale->order_number)
+                        ->where('customer_id', $customer->id)
+                        ->with(['product', 'artisan'])
+                        ->get();
+
+        // Calculate total for the entire order
+        $orderTotal = $allSales->sum('total_price');
+
+        return view('customers.order-detail', compact('customer', 'sale', 'allSales', 'orderTotal'));
     }
 }

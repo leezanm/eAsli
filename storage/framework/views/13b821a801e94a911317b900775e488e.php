@@ -1,8 +1,6 @@
 <?php $__env->startSection('title', 'Home Page'); ?>
 
 <?php $__env->startSection('content'); ?>
-<!-- Hero Section with Animated Background -->
-
 <!-- Interactive Map Section (same behavior as dedicated map page) -->
 <section class="bg-gradient-to-br mt-5 from-neutral-100 to-neutral-50 py-16 relative overflow-hidden">
     
@@ -96,61 +94,7 @@
 </section>
 
 <!-- Stats Section -->
-<section class="bg-gradient-to-br from-secondary-50 via-secondary-100 to-neutral-0 py-5 relative overflow-hidden">
-    
-    <div class="max-w-7xl mx-auto px-4 relative z-10">
-        <div class="text-center mb-16">
-            <span class="inline-block bg-accent-500 text-white px-4 py-2 rounded-full font-bold text-sm mb-4">
-                <i class="fas fa-chart-bar mr-2"></i>Real-time Stats
-            </span>
-            <h2 class="text-5xl font-bold text-neutral-800 mb-4">Our Platform is Growing Fast</h2>
-            <p class="text-neutral-700 text-lg max-w-2xl mx-auto">Local artisans with eAsli</p>
-            <div class="h-1 w-32 bg-gradient-to-r from-primary-600 via-accent-600 to-secondary-600 rounded-full mx-auto mt-6"></div>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div class="bg-gradient-to-br from-secondary-100 to-secondary-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 text-center border-l-4 border-primary-400 hover:translate-y-[-8px] transform hover:scale-105">
-                <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition">
-                    <i class="fas fa-users text-white text-2xl"></i>
-                </div>
-                <p class="text-neutral-800 text-sm font-semibold uppercase mb-2 tracking-wider text-primary-700">Total Artisans</p>
-                <p class="text-5xl font-bold text-primary-600"><?php echo e(\App\Models\Artisan::count()); ?></p>
-                <p class="text-neutral-600 text-xs mt-3 flex items-center justify-center gap-1">
-                    <i class="fas fa-arrow-up text-primary-500"></i>Active Artisans
-                </p>
-            </div>
-            <div class="bg-gradient-to-br from-secondary-100 to-secondary-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 text-center border-l-4 border-accent-400 hover:translate-y-[-8px] transform hover:scale-105">
-                <div class="bg-gradient-to-br from-accent-500 to-accent-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition">
-                    <i class="fas fa-shop text-white text-2xl"></i>
-                </div>
-                <p class="text-neutral-800 text-sm font-semibold uppercase mb-2 tracking-wider text-accent-700">Total Shops</p>
-                <p class="text-5xl font-bold text-accent-600"><?php echo e(\App\Models\Shop::count()); ?></p>
-                <p class="text-neutral-600 text-xs mt-3 flex items-center justify-center gap-1">
-                    <i class="fas fa-arrow-up text-accent-500"></i>Verified Shops
-                </p>
-            </div>
-            <div class="bg-gradient-to-br from-secondary-100 to-secondary-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 text-center border-l-4 border-primary-300 hover:translate-y-[-8px] transform hover:scale-105">
-                <div class="bg-gradient-to-br from-primary-400 to-primary-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition">
-                    <i class="fas fa-box text-white text-2xl"></i>
-                </div>
-                <p class="text-neutral-800 text-sm font-semibold uppercase mb-2 tracking-wider text-primary-600">Total Products</p>
-                <p class="text-5xl font-bold text-primary-500"><?php echo e(\App\Models\Product::count()); ?></p>
-                <p class="text-neutral-600 text-xs mt-3 flex items-center justify-center gap-1">
-                    <i class="fas fa-arrow-up text-primary-400"></i>Available Products
-                </p>
-            </div>
-            <div class="bg-gradient-to-br from-secondary-100 to-secondary-50 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 p-8 text-center border-l-4 border-accent-300 hover:translate-y-[-8px] transform hover:scale-105">
-                <div class="bg-gradient-to-br from-accent-400 to-accent-500 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:scale-110 transition">
-                    <i class="fas fa-receipt text-white text-2xl"></i>
-                </div>
-                <p class="text-neutral-800 text-sm font-semibold uppercase mb-2 tracking-wider text-accent-600">Total Sales</p>
-                <p class="text-5xl font-bold text-accent-500"><?php echo e(\App\Models\Sale::count()); ?></p>
-                <p class="text-neutral-600 text-xs mt-3 flex items-center justify-center gap-1">
-                    <i class="fas fa-arrow-up text-accent-400"></i>Successful Orders
-                </p>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 <!-- Featured Products Section -->
 <section class="bg-gradient-to-br from-secondary-50 via-secondary-100 to-neutral-0 py-5 relative overflow-hidden">
@@ -165,10 +109,10 @@
                 <span class="inline-block bg-yellow-400 text-white px-4 py-2 rounded-full font-bold text-sm mb-4">
                     <i class="fas fa-star mr-2"></i>Best Picks
                 </span>
-                <h2 class="text-5xl font-bold bg-gradient-to-r from-primary-700 via-accent-600 to-secondary-600 bg-clip-text text-transparent mb-4">Featured Products</h2>
+                <h2 class="text-5xl font-bold bg-gradient-to-r from-primary-700 via-accent-600 to-secondary-600 bg-clip-text text-transparent mb-4">Products</h2>
                 <div class="h-1 w-32 bg-gradient-to-r from-primary-600 via-accent-600 to-secondary-600 rounded-full"></div>
             </div>
-            <a href="<?php echo e(route('products.index')); ?>" class="mt-6 md:mt-0 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold py-3 px-8 rounded-lg transition shadow-lg hover:shadow-2xl transform hover:scale-105 flex items-center gap-2">
+            <a href="<?php echo e(route('products.shop')); ?>" class="mt-6 md:mt-0 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold py-3 px-8 rounded-lg transition shadow-lg hover:shadow-2xl transform hover:scale-105 flex items-center gap-2">
                 View All Products <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -266,148 +210,10 @@
         </div>
     </div>
 </section>
-<section class="bg-gradient-to-br from-primary-300 via-accent-200 to-secondary-300 text-primary-900 py-24 relative overflow-hidden">
-    <!-- Animated background elements -->
-    <div class="absolute inset-0 opacity-15">
-        <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-accent-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-        <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-primary-400 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
-    </div>
 
-    <!-- Decorative lines -->
-    <div class="absolute top-10 left-10 text-primary-600 opacity-30 text-6xl">
-        <i class="fas fa-leaf animate-pulse"></i>
-    </div>
-    <div class="absolute bottom-10 right-10 text-primary-600 opacity-30 text-6xl" style="animation-delay: 0.5s;">
-        <i class="fas fa-leaf animate-pulse" style="transform: rotate(180deg);"></i>
-    </div>
-
-    <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
-        <!-- Badge -->
-        <div class="inline-block bg-white bg-opacity-40 text-primary-800 px-6 py-3 rounded-full font-bold text-sm mb-6 backdrop-blur-sm border-2 border-primary-600 hover:bg-opacity-60 transition">
-            <i class="fas fa-rocket mr-2"></i>Join the eAsli Community
-        </div>
-
-        <!-- Main Heading -->
-        <h2 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
-            <span class="inline-block bg-gradient-to-r from-primary-700 via-secondary-700 to-primary-700 bg-clip-text text-transparent">Start Managing Your Business</span>
-        </h2>
-
-        <!-- Subheading -->
-        <p class="text-xl md:text-2xl mb-12 text-primary-800 font-medium max-w-2xl mx-auto leading-relaxed">
-            Register as an artisan or login to access all <span class="font-bold text-secondary-700">eAsli</span> features for free. Increase your product visibility now!
-        </p>
-
-        <!-- Stats line before buttons -->
-        <div class="flex justify-center gap-8 mb-12 text-sm flex-wrap">
-            <div class="flex items-center gap-2 hover:scale-110 transition">
-                <i class="fas fa-check-circle text-primary-700 text-xl"></i>
-                <span class="text-primary-900 font-semibold">100% Free</span>
-            </div>
-            <div class="flex items-center gap-2 hover:scale-110 transition">
-                <i class="fas fa-check-circle text-secondary-700 text-xl"></i>
-                <span class="text-primary-900 font-semibold">Easy Setup</span>
-            </div>
-            <div class="flex items-center gap-2 hover:scale-110 transition">
-                <i class="fas fa-check-circle text-accent-600 text-xl"></i>
-                <span class="text-primary-900 font-semibold">24/7 Support</span>
-            </div>
-        </div>
-
-        <!-- CTA Buttons -->
-        <div class="flex gap-6 justify-center flex-wrap">
-            <a href="<?php echo e(route('artisans.login')); ?>" class="group bg-white text-primary-700 hover:bg-neutral-100 font-bold py-4 px-12 rounded-xl transition shadow-2xl hover:shadow-3xl transform hover:scale-110 flex items-center gap-3 border-2 border-primary-600">
-                <i class="fas fa-sign-in-alt group-hover:animate-bounce text-xl"></i>
-                <span>Artisan Login</span>
-            </a>
-            <a href="<?php echo e(route('artisans.create')); ?>" class="group bg-gradient-to-r from-accent-400 to-yellow-300 hover:from-accent-500 hover:to-yellow-400 text-primary-900 font-bold py-4 px-12 rounded-xl transition shadow-2xl hover:shadow-3xl transform hover:scale-110 flex items-center gap-3">
-                <i class="fas fa-user-plus group-hover:animate-bounce text-xl"></i>
-                <span>Register New</span>
-            </a>
-        </div>
-
-        <!-- Bottom ornament -->
-        <div class="mt-12 flex justify-center gap-2 text-primary-700 text-opacity-60">
-            <i class="fas fa-sparkles"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-sparkles"></i>
-        </div>
-    </div>
-</section>
 
 <!-- Shop Our Most-Loved Categories Section -->
-<section class="bg-gradient-to-b from-neutral-0 to-primary-50 py-20 relative overflow-hidden">
-    <div class="max-w-7xl mx-auto px-4 relative z-10">
-        <!-- Section Header -->
-        <div class="mb-16">
-            <h2 class="text-4xl md:text-5xl font-black text-primary-900 mb-2">Shop our most-loved categories</h2>
-            <p class="text-neutral-600 text-lg">Discover the artisan products our customers love most</p>
-        </div>
 
-        <!-- Categories Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-6">
-            <!-- Category 1 -->
-            <a href="#" class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 h-64 flex flex-col justify-end">
-                <div class="absolute inset-0 bg-gradient-to-br from-primary-200 to-primary-400 group-hover:scale-110 transition-transform duration-300"></div>
-                <div class="flex items-center justify-center h-full text-6xl opacity-80 group-hover:opacity-100 transition-opacity z-10">
-                    <i class="fas fa-palette"></i>
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <h3 class="relative text-white font-bold text-lg p-4 z-20">Handmade Crafts</h3>
-            </a>
-
-            <!-- Category 2 -->
-            <a href="#" class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 h-64 flex flex-col justify-end">
-                <div class="absolute inset-0 bg-gradient-to-br from-accent-200 to-accent-400 group-hover:scale-110 transition-transform duration-300"></div>
-                <div class="flex items-center justify-center h-full text-6xl opacity-80 group-hover:opacity-100 transition-opacity z-10">
-                    <i class="fas fa-ring"></i>
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <h3 class="relative text-white font-bold text-lg p-4 z-20">Jewelry</h3>
-            </a>
-
-            <!-- Category 3 -->
-            <a href="#" class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 h-64 flex flex-col justify-end">
-                <div class="absolute inset-0 bg-gradient-to-br from-secondary-200 to-secondary-400 group-hover:scale-110 transition-transform duration-300"></div>
-                <div class="flex items-center justify-center h-full text-6xl opacity-80 group-hover:opacity-100 transition-opacity z-10">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <h3 class="relative text-white font-bold text-lg p-4 z-20">Home Decor</h3>
-            </a>
-
-            <!-- Category 4 -->
-            <a href="#" class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 h-64 flex flex-col justify-end">
-                <div class="absolute inset-0 bg-gradient-to-br from-pink-200 to-pink-400 group-hover:scale-110 transition-transform duration-300"></div>
-                <div class="flex items-center justify-center h-full text-6xl opacity-80 group-hover:opacity-100 transition-opacity z-10">
-                    <i class="fas fa-shirt"></i>
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <h3 class="relative text-white font-bold text-lg p-4 z-20">Fashion</h3>
-            </a>
-
-            <!-- Category 5 -->
-            <a href="#" class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 h-64 flex flex-col justify-end">
-                <div class="absolute inset-0 bg-gradient-to-br from-yellow-200 to-yellow-400 group-hover:scale-110 transition-transform duration-300"></div>
-                <div class="flex items-center justify-center h-full text-6xl opacity-80 group-hover:opacity-100 transition-opacity z-10">
-                    <i class="fas fa-images"></i>
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <h3 class="relative text-white font-bold text-lg p-4 z-20">Art & Design</h3>
-            </a>
-
-            <!-- Category 6 -->
-            <a href="#" class="group relative overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 h-64 flex flex-col justify-end">
-                <div class="absolute inset-0 bg-gradient-to-br from-purple-200 to-purple-400 group-hover:scale-110 transition-transform duration-300"></div>
-                <div class="flex items-center justify-center h-full text-6xl opacity-80 group-hover:opacity-100 transition-opacity z-10">
-                    <i class="fas fa-gift"></i>
-                </div>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                <h3 class="relative text-white font-bold text-lg p-4 z-20">Gift Ideas</h3>
-            </a>
-        </div>
-    </div>
-</section>
 
 <?php $__env->startSection('js'); ?>
 <script>
@@ -690,6 +496,10 @@
     renderShopsOnMap(allShops);
     renderShopList(allShops, 'All Active Shops');
 </script>
+
+<!-- Splash Popup -->
+<?php echo $__env->make('splash-popup', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?>
+
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Users/leezanm/eAsli-app/resources/views/welcome.blade.php ENDPATH**/ ?>

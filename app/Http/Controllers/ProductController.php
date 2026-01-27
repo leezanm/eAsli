@@ -34,6 +34,26 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
+    public function shop()
+    {
+        $search = request('search');
+        $category = request('category');
+
+        $query = Product::with('artisan');
+
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+
+        if ($category) {
+            $query->where('category', $category);
+        }
+
+        $products = $query->paginate(12);
+        return view('products.shop', compact('products'));
+    }
+
     public function create()
     {
         if (!Auth::guard('artisan')->check()) {

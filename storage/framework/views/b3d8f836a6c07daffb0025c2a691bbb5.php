@@ -94,6 +94,14 @@ unset($__errorArgs, $__bag); ?>
                     </button>
                 </form>
 
+                <!-- Sign Up for New Customer -->
+                <div class="mt-6 pb-6 border-b border-neutral-200">
+                    <p class="text-center text-neutral-700 text-sm mb-3 font-medium">New to eAsli?</p>
+                    <a href="<?php echo e(route('customers.create')); ?>" class="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold py-3 px-4 rounded-lg shadow-md hover:shadow-lg transition transform hover:scale-105 duration-300 uppercase tracking-wide">
+                        <i class="fas fa-user-plus"></i>Create New Account
+                    </a>
+                </div>
+
                 <!-- Back to Home -->
                 <div class="mt-6 text-center">
                     <a href="<?php echo e(route('home')); ?>" class="text-primary-700 hover:text-primary-800 font-semibold flex items-center justify-center gap-2">

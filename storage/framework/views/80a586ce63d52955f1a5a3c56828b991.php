@@ -95,13 +95,20 @@
                     <p class="text-xs text-neutral-500 mb-4">Prices are inclusive of any applicable taxes. Shipping is handled directly by artisans.</p>
                 </div>
 
-                <form method="POST" action="<?php echo e(route('cart.checkout')); ?>" class="mt-4">
-                    <?php echo csrf_field(); ?>
-                    <button type="submit" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold shadow-md hover:from-primary-700 hover:to-primary-600 transition">
+                <?php if(auth('customer')->check()): ?>
+                    <!-- Customer is logged in - show checkout button -->
+                    <a href="<?php echo e(route('cart.checkout')); ?>" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-primary-600 to-primary-500 text-white text-sm font-semibold shadow-md hover:from-primary-700 hover:to-primary-600 transition mt-4">
                         <i class="fas fa-credit-card"></i>
                         <span>Checkout</span>
-                    </button>
-                </form>
+                    </a>
+                <?php else: ?>
+                    <!-- Customer is NOT logged in - show register button -->
+                    <a href="<?php echo e(route('customers.create', ['redirect_to' => route('cart.checkout')])); ?>" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-accent-500 to-accent-600 text-white text-sm font-semibold shadow-md hover:from-accent-600 hover:to-accent-700 transition mt-4">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Create Account to Checkout</span>
+                    </a>
+                    <p class="text-xs text-neutral-500 text-center mt-3">Create an account to complete your purchase</p>
+                <?php endif; ?>                </form>
             </div>
         </div>
     <?php endif; ?>

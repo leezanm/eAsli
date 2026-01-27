@@ -85,9 +85,20 @@
         </div>
     @else
         <!-- Products grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             @foreach($products as $product)
-                <div class="bg-white rounded-2xl border border-secondary-200 shadow-md hover:shadow-xl transition transform hover:-translate-y-1 flex flex-col">
+                <div class="bg-white rounded-2xl border border-secondary-200 shadow-md hover:shadow-xl transition transform hover:-translate-y-1 flex flex-col overflow-hidden group">
+                    <!-- Product Image -->
+                    <div class="relative w-full h-64 bg-gradient-to-br from-neutral-200 to-neutral-300 overflow-hidden rounded-t-2xl">
+                        @if($product->image_path)
+                            <img src="{{ asset('storage/' . $product->image_path) }}" alt="{{ $product->name }}" class="w-full h-72 object-cover group-hover:scale-110 transition duration-500">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-100 to-secondary-100">
+                                <i class="fas fa-box text-neutral-400 text-6xl"></i>
+                            </div>
+                        @endif
+                    </div>
+
                     <div class="p-6 flex-1 flex flex-col gap-3">
                         <div class="flex items-start justify-between gap-3">
                             <div>

@@ -59,3 +59,11 @@
     --color-neutral-800: #3a3530;
     --color-neutral-900: #2e2e2e;
 }
+/* Custom animation delays for blob animation */
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+    animation-delay: 4s;
+}

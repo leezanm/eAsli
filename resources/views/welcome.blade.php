@@ -3,159 +3,6 @@
 @section('title', 'Home Page')
 
 @section('content')
-<!-- Hero Section with Animated Background -->
-{{-- <div class="bg-white text-neutral-800 py-24 relative overflow-hidden min-h-screen flex items-center">
-    <!-- Animated background elements -->
-    <div class="absolute inset-0">
-        <!-- Blob 1 -->
-        <div class="absolute top-0 left-10 w-72 h-72 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
-        <!-- Blob 2 -->
-        <div class="absolute top-20 right-10 w-72 h-72 bg-secondary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style="animation-delay: 1s;"></div>
-        <!-- Blob 3 -->
-        <div class="absolute -bottom-10 left-1/2 w-72 h-72 bg-accent-100 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse" style="animation-delay: 2s;"></div>
-        <!-- Blob 4 -->
-        <div class="absolute top-1/2 right-1/4 w-96 h-96 bg-primary-50 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse" style="animation-delay: 0.5s;"></div>
-    </div>
-
-    <!-- Decorative shapes -->
-    <div class="absolute top-10 left-5 opacity-15">
-        <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-            <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="2"/>
-            <path d="M50 20 L80 80 L20 80 Z" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
-    </div>
-    <div class="absolute bottom-10 right-5 opacity-15">
-        <svg width="150" height="150" viewBox="0 0 150 150" fill="none">
-            <rect x="20" y="20" width="110" height="110" stroke="currentColor" stroke-width="2" rx="20"/>
-            <circle cx="75" cy="75" r="30" stroke="currentColor" stroke-width="2" fill="none"/>
-        </svg>
-    </div>
-
-    <div class="max-w-7xl mx-auto px-4 relative z-10 w-full">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <!-- Left Content -->
-            <div class="space-y-8">
-                <!-- Animated Badge -->
-                <div class="inline-block">
-                    <span class="inline-flex items-center gap-2 bg-gradient-to-r from-accent-600 to-accent-500 text-white px-6 py-3 rounded-full font-bold text-sm shadow-lg backdrop-blur-sm border border-accent-500 animate-pulse">
-                        <span class="flex h-3 w-3">
-                            <span class="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-accent-400 opacity-75"></span>
-                            <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-                        </span>
-                        eAsli Exclusive Platform
-                    </span>
-                </div>
-
-                <!-- Main Heading -->
-                <div>
-                    <h1 class="text-6xl md:text-7xl lg:text-8xl font-black leading-tight mb-6">
-                        <span class="block text-neutral-800">Support</span>
-                        <span class="block bg-gradient-to-r from-primary-500 via-accent-500 to-secondary-600 bg-clip-text text-transparent">Local Artisans</span>
-                        <span class="block text-neutral-800">Worldwide</span>
-                    </h1>
-                    <div class="h-2 w-32 bg-gradient-to-r from-primary-400 to-accent-500 rounded-full"></div>
-                </div>
-
-                <!-- Description -->
-                <p class="text-xl md:text-2xl text-neutral-700 leading-relaxed max-w-lg font-medium">
-                    Explore unique handcrafted products from talented artisans across Malaysia. Support the local economy and discover premium quality items.
-                </p>
-
-                <!-- Feature Pills -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div class="flex items-center gap-3 bg-gradient-to-br from-secondary-100 to-secondary-50 backdrop-blur-sm p-4 rounded-lg border-2 border-secondary-300 hover:bg-secondary-50 transition shadow-lg hover:shadow-xl hover:scale-105 transform">
-                        <div class="flex-shrink-0">
-                            <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg">
-                                <i class="fas fa-shopping-bag text-white text-xl"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="font-bold text-lg text-neutral-800">{{ \App\Models\Product::count() }}</p>
-                            <p class="text-sm text-neutral-600">Premium Products</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 bg-gradient-to-br from-secondary-100 to-secondary-50 backdrop-blur-sm p-4 rounded-lg border-2 border-secondary-300 hover:bg-secondary-50 transition shadow-lg hover:shadow-xl hover:scale-105 transform">
-                        <div class="flex-shrink-0">
-                            <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-primary-400 to-primary-500 shadow-lg">
-                                <i class="fas fa-users text-white text-xl"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="font-bold text-lg text-neutral-800">{{ \App\Models\Artisan::count() }}</p>
-                            <p class="text-sm text-neutral-600">Active Artisans</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 bg-gradient-to-br from-secondary-100 to-secondary-50 backdrop-blur-sm p-4 rounded-lg border-2 border-secondary-300 hover:bg-secondary-50 transition shadow-lg hover:shadow-xl hover:scale-105 transform">
-                        <div class="flex-shrink-0">
-                            <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-accent-500 to-accent-600 shadow-lg">
-                                <i class="fas fa-map-marker-alt text-white text-xl"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="font-bold text-lg text-neutral-800">{{ \App\Models\Shop::count() }}</p>
-                            <p class="text-sm text-neutral-600">Verified Shops</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 bg-gradient-to-br from-secondary-100 to-secondary-50 backdrop-blur-sm p-4 rounded-lg border-2 border-secondary-300 hover:bg-secondary-50 transition shadow-lg hover:shadow-xl hover:scale-105 transform">
-                        <div class="flex-shrink-0">
-                            <div class="flex items-center justify-center h-12 w-12 rounded-xl bg-gradient-to-br from-accent-400 to-accent-500 shadow-lg">
-                                <i class="fas fa-check-circle text-white text-xl"></i>
-                            </div>
-                        </div>
-                        <div>
-                            <p class="font-bold text-lg text-neutral-800">{{ \App\Models\Sale::count() }}</p>
-                            <p class="text-sm text-neutral-600">Successful Orders</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- CTA Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                    <a href="{{ route('artisans.login') }}" class="group relative inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-lg rounded-xl overflow-hidden shadow-2xl transform hover:scale-105 transition-all duration-300">
-                        <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-500 opacity-100 group-hover:opacity-90 transition"></div>
-                        <div class="relative flex items-center gap-2 text-white">
-                            <i class="fas fa-sign-in-alt text-xl group-hover:animate-bounce"></i>
-                            <span>Artisan Login</span>
-                        </div>
-                    </a>
-                    <a href="{{ route('artisans.create') }}" class="group relative inline-flex items-center justify-center gap-2 px-8 py-4 font-bold text-lg rounded-xl border-2 border-accent-600 text-accent-700 hover:bg-accent-600 hover:text-white transition-all duration-300 shadow-lg">
-                        <i class="fas fa-rocket text-xl group-hover:animate-bounce"></i>
-                        <span>Register Now</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Right Visual -->
-            <div class="hidden lg:block relative h-[600px]">
-                <!-- Floating Cards Animation -->
-                <div class="absolute top-0 right-0 w-64 h-80 bg-gradient-to-br from-primary-500 to-primary-600 rounded-3xl shadow-2xl transform -rotate-6 hover:rotate-0 transition-transform duration-300 hover:shadow-3xl hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-br from-primary-500/90 to-primary-600/90 rounded-3xl"></div>
-                    <div class="flex flex-col items-center justify-center h-full text-white p-6">
-                        <i class="fas fa-leaf text-7xl mb-4 text-secondary-200 drop-shadow-2xl font-bold"></i>
-                        <p class="text-2xl font-bold text-center drop-shadow-lg text-white">Local Products</p>
-                        <p class="text-sm mt-2 text-center text-primary-100 drop-shadow-md font-semibold">Premium Quality</p>
-                    </div>
-                </div>
-                <div class="absolute top-32 left-0 w-64 h-80 bg-gradient-to-br from-accent-500 to-accent-600 rounded-3xl shadow-2xl transform rotate-6 hover:rotate-0 transition-transform duration-300 delay-100 hover:shadow-3xl hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-br from-accent-500/90 to-accent-600/90 rounded-3xl"></div>
-                    <div class="flex flex-col items-center justify-center h-full text-white p-6">
-                        <i class="fas fa-hammer text-7xl mb-4 text-secondary-200 drop-shadow-2xl font-bold"></i>
-                        <p class="text-2xl font-bold text-center drop-shadow-lg text-white">Expert Artisans</p>
-                        <p class="text-sm mt-2 text-center text-accent-100 drop-shadow-md font-semibold">Decades of Experience</p>
-                    </div>
-                </div>
-                <div class="absolute bottom-0 right-32 w-64 h-80 bg-gradient-to-br from-primary-400 to-primary-500 rounded-3xl shadow-2xl transform rotate-3 hover:rotate-0 transition-transform duration-300 delay-200 hover:shadow-3xl hover:scale-105">
-                    <div class="absolute inset-0 bg-gradient-to-br from-primary-400/90 to-primary-500/90 rounded-3xl"></div>
-                    <div class="flex flex-col items-center justify-center h-full text-white p-6">
-                        <i class="fas fa-star text-7xl mb-4 text-secondary-200 drop-shadow-2xl font-bold"></i>
-                        <p class="text-2xl font-bold text-center drop-shadow-lg text-white">Trusted</p>
-                        <p class="text-sm mt-2 text-center text-primary-100 drop-shadow-md font-semibold">Highly Rated by Customers</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div> --}}
 <!-- Interactive Map Section (same behavior as dedicated map page) -->
 <section class="bg-gradient-to-br mt-5 from-neutral-100 to-neutral-50 py-16 relative overflow-hidden">
     {{-- <div class="absolute inset-0 opacity-3">
@@ -268,11 +115,11 @@
 </section>
 
 <!-- Stats Section -->
-<section class="bg-gradient-to-br from-secondary-50 via-secondary-100 to-neutral-0 py-5 relative overflow-hidden">
-    {{-- <div class="absolute inset-0 opacity-3">
+{{-- <section class="bg-gradient-to-br from-secondary-50 via-secondary-100 to-neutral-0 py-5 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-3">
         <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
         <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent-500 rounded-full mix-blend-multiply filter blur-3xl"></div>
-    </div> --}}
+    </div>
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <div class="text-center mb-16">
             <span class="inline-block bg-accent-500 text-white px-4 py-2 rounded-full font-bold text-sm mb-4">
@@ -325,7 +172,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 
 <!-- Featured Products Section -->
 <section class="bg-gradient-to-br from-secondary-50 via-secondary-100 to-neutral-0 py-5 relative overflow-hidden">
@@ -340,10 +187,10 @@
                 <span class="inline-block bg-yellow-400 text-white px-4 py-2 rounded-full font-bold text-sm mb-4">
                     <i class="fas fa-star mr-2"></i>Best Picks
                 </span>
-                <h2 class="text-5xl font-bold bg-gradient-to-r from-primary-700 via-accent-600 to-secondary-600 bg-clip-text text-transparent mb-4">Featured Products</h2>
+                <h2 class="text-5xl font-bold bg-gradient-to-r from-primary-700 via-accent-600 to-secondary-600 bg-clip-text text-transparent mb-4">Products</h2>
                 <div class="h-1 w-32 bg-gradient-to-r from-primary-600 via-accent-600 to-secondary-600 rounded-full"></div>
             </div>
-            <a href="{{ route('products.index') }}" class="mt-6 md:mt-0 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold py-3 px-8 rounded-lg transition shadow-lg hover:shadow-2xl transform hover:scale-105 flex items-center gap-2">
+            <a href="{{ route('products.shop') }}" class="mt-6 md:mt-0 bg-gradient-to-r from-accent-500 to-accent-600 hover:from-accent-600 hover:to-accent-700 text-white font-bold py-3 px-8 rounded-lg transition shadow-lg hover:shadow-2xl transform hover:scale-105 flex items-center gap-2">
                 View All Products <i class="fas fa-arrow-right"></i>
             </a>
         </div>
@@ -439,7 +286,7 @@
         </div>
     </div>
 </section>
-<section class="bg-gradient-to-br from-primary-300 via-accent-200 to-secondary-300 text-primary-900 py-24 relative overflow-hidden">
+{{-- <section class="bg-gradient-to-br from-primary-300 via-accent-200 to-secondary-300 text-primary-900 py-24 relative overflow-hidden">
     <!-- Animated background elements -->
     <div class="absolute inset-0 opacity-15">
         <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
@@ -506,10 +353,10 @@
             <i class="fas fa-sparkles"></i>
         </div>
     </div>
-</section>
+</section> --}}
 
 <!-- Shop Our Most-Loved Categories Section -->
-<section class="bg-gradient-to-b from-neutral-0 to-primary-50 py-20 relative overflow-hidden">
+{{-- <section class="bg-gradient-to-b from-neutral-0 to-primary-50 py-20 relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 relative z-10">
         <!-- Section Header -->
         <div class="mb-16">
@@ -580,7 +427,7 @@
             </a>
         </div>
     </div>
-</section>
+</section> --}}
 
 @section('js')
 <script>
@@ -863,4 +710,8 @@
     renderShopsOnMap(allShops);
     renderShopList(allShops, 'All Active Shops');
 </script>
+
+<!-- Splash Popup -->
+@include('splash-popup')
+
 @endsection

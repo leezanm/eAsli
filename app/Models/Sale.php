@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Sale extends Model
 {
     protected $fillable = [
+        'order_number',
         'artisan_id',
         'product_id',
         'customer_id',
@@ -16,6 +17,15 @@ class Sale extends Model
         'total_price',
         'sale_date',
         'payment_status',
+        'payment_method',
+        'billing_name',
+        'billing_phone',
+        'billing_email',
+        'billing_address',
+        'receiver_name',
+        'receiver_phone',
+        'receiver_email',
+        'receiver_address',
         'notes',
     ];
 

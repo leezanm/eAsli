@@ -14,6 +14,9 @@
         body {
             font-family: 'Poppins', ui-sans-serif, system-ui, sans-serif;
         }
+          .min-h-screen {
+    min-height: 0vh;
+  }
     </style>
 </head>
 <body class="bg-secondary-100 text-neutral-900">
@@ -36,7 +39,7 @@
                             <span>Categories</span>
                         </button>
                         <div class="absolute left-0 mt-1 w-56 bg-white border border-neutral-200 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-150 z-50">
-                            <a href="{{ route('products.index') }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition first:rounded-t-lg">
+                            <a href="{{ route('products.shop') }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition first:rounded-t-lg">
                                 <i class="fas fa-gem mr-2 text-accent-500"></i>All Products
                             </a>
                             <a href="#" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
@@ -54,7 +57,7 @@
 
                 <!-- Search Bar -->
                 <div class="hidden md:flex flex-1 max-w-3xl mx-4">
-                    <form action="{{ route('products.index') }}" method="GET" class="w-full">
+                    <form action="{{ route('products.shop') }}" method="GET" class="w-full">
                         <div class="flex items-center w-full rounded-full border border-neutral-300 bg-white shadow-sm overflow-hidden">
                             <input
                                 type="text"
@@ -249,7 +252,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gradient-to-r from-primary-800 to-primary-700 text-neutral-100 mt-16 border-t-4 border-accent-400 shadow-xl">
+    <footer class="bg-gradient-to-r from-primary-800 to-primary-700 text-neutral-100 mt-5 border-t-4 border-accent-400 shadow-xl">
         <div class="max-w-7xl mx-auto px-4 py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
                 <div class="hover:translate-y-[-4px] transition">
@@ -268,7 +271,7 @@
                     <ul class="text-sm space-y-3">
                         <li><a href="{{ route('home') }}" class="text-neutral-300 hover:text-accent-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-accent-500"></i>Home</a></li>
                         <li><a href="{{ route('shops.map') }}" class="text-neutral-300 hover:text-accent-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-accent-500"></i>Explore Shops</a></li>
-                        <li><a href="{{ route('products.index') }}" class="text-neutral-300 hover:text-accent-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-accent-500"></i>Product Catalogue</a></li>
+                        <li><a href="{{ route('products.shop') }}" class="text-neutral-300 hover:text-accent-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-accent-500"></i>Product Catalogue</a></li>
                         <li><a href="{{ route('artisans.login') }}" class="text-neutral-300 hover:text-accent-400 transition flex items-center gap-2"><i class="fas fa-chevron-right text-accent-500"></i>Artisan Login</a></li>
                     </ul>
                 </div>
