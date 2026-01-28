@@ -42,12 +42,12 @@
                             <a href="{{ route('products.shop') }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition first:rounded-t-lg">
                                 <i class="fas fa-gem mr-2 text-accent-500"></i>All Products
                             </a>
-                            <a href="#" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
+                            {{-- <a href="#" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
                                 <i class="fas fa-hand-holding-heart mr-2 text-primary-500"></i>Handmade Gifts
                             </a>
                             <a href="#" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition">
                                 <i class="fas fa-home mr-2 text-primary-600"></i>Home Favourites
-                            </a>
+                            </a> --}}
                             <a href="{{ route('shops.map') }}" class="block px-4 py-3 text-neutral-800 hover:bg-neutral-50 transition last:rounded-b-lg">
                                 <i class="fas fa-map-marker-alt mr-2 text-accent-600"></i>Explore Map
                             </a>
@@ -194,7 +194,7 @@
             </div>
 
             <!-- Secondary Navigation (Categories row) -->
-            <div class="hidden lg:block border-t border-neutral-200">
+            {{-- <div class="hidden lg:block border-t border-neutral-200">
                 <div class="flex items-center justify-center gap-8 py-3 text-sm font-medium text-neutral-700 overflow-x-auto">
                     <a href="#" class="whitespace-nowrap hover:text-primary-700 transition flex items-center gap-1">
                         <i class="fas fa-gift text-xs"></i>
@@ -217,7 +217,7 @@
                         <span>Local Registry</span>
                     </a>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </nav>
 
