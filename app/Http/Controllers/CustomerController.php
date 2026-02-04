@@ -189,8 +189,8 @@ class CustomerController extends Controller
 
         $sale = $sale->load(['product', 'artisan']);
 
-        // Get all sales with the same order number to display all items from this order
-        $allSales = Sale::where('order_number', $sale->order_number)
+        // Get all sales with the same order_group to display all items from this order
+        $allSales = Sale::where('order_group', $sale->order_group)
                         ->where('customer_id', $customer->id)
                         ->with(['product', 'artisan'])
                         ->get();

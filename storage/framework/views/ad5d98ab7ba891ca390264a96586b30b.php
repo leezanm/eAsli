@@ -19,7 +19,10 @@
                 <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
                         <p class="text-sm font-semibold text-primary-100 uppercase tracking-wide mb-1">Order ID</p>
-                        <p class="text-3xl font-bold">#<?php echo e($sale->id); ?></p>
+                        
+                                               <p class="text-3xl font-bold"># <?php echo e(isset($sale->order_group) ? $sale->order_group : $sale->order_number); ?></p>
+
+                        
                     </div>
                     <div class="text-right">
                         <p class="text-sm font-semibold text-primary-100 uppercase tracking-wide mb-1">Order Date</p>

@@ -6,22 +6,26 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('sales', function (Blueprint $table) {
-            $table->string('order_number')->nullable()->unique()->after('id');
-            $table->string('order_group')->nullable()->index()->after('order_number');
+            if (!Schema::hasColumn('sales', 'order_group')) {
+                $table->string('order_group')->nullable()->index()->after('order_number');
+            }
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('sales', function (Blueprint $table) {
             if (Schema::hasColumn('sales', 'order_group')) {
                 $table->dropColumn('order_group');
-            }
-            if (Schema::hasColumn('sales', 'order_number')) {
-                $table->dropColumn('order_number');
             }
         });
     }

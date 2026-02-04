@@ -9,6 +9,7 @@ class Sale extends Model
 {
     protected $fillable = [
         'order_number',
+        'order_group',
         'artisan_id',
         'product_id',
         'customer_id',

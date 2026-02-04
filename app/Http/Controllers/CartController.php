@@ -170,9 +170,9 @@ class CartController extends Controller
             $products = Product::whereIn('id', $productIds)->get()->keyBy('id');
 
             $latestSaleId = null;
-            $orderNumber = 'ORD-' . now()->format('YmdHis') . '-' . $customer->id;
+            $orderGroup = 'ORD-' . now()->format('YmdHis') . '-' . $customer->id;
 
-            DB::transaction(function () use ($cart, $products, $customer, $validated, &$latestSaleId, $orderNumber) {
+            DB::transaction(function () use ($cart, $products, $customer, $validated, &$latestSaleId, $orderGroup) {
                 foreach ($cart as $productId => $item) {
                     $product = $products->get($productId);
                     if (!$product) {
@@ -189,9 +189,10 @@ class CartController extends Controller
 
                     $unitPrice = $product->price;
                     $totalPrice = $unitPrice * $quantity;
-
+                    // one order group ID can have multiple products
                     $sale = Sale::create([
-                        'order_number' => $orderNumber,
+                        'order_number' => null,
+                        'order_group' => $orderGroup,
                         'artisan_id' => $product->artisan_id,
                         'product_id' => $product->id,
                         'customer_id' => $customer->id,
@@ -228,7 +229,8 @@ class CartController extends Controller
             return redirect()->route('customers.order', [$customer->id, $latestSaleId])
                 ->with('success', 'Thank you! Your order has been placed successfully.');
         } catch (\Exception $e) {
-            return redirect()->route('cart.checkout')->withErrors(['checkout' => 'An error occurred during checkout. Please try again.']);
+            \Log::error('Checkout Error: ' . $e->getMessage() . ' ' . $e->getFile() . ':' . $e->getLine());
+            return redirect()->route('cart.checkout')->withErrors(['checkout' => 'Checkout failed: ' . $e->getMessage()]);
         }
     }
 }

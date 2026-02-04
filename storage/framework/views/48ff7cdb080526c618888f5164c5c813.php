@@ -170,7 +170,7 @@
                             <!-- Action Button -->
                             <div class="md:col-span-2">
                                 <p class="md:hidden text-xs text-neutral-600 font-semibold mb-2">ACTION</p>
-                                <?php if(auth('customer')->check()): ?>
+                                
                                     <?php if($product->stock > 0): ?>
                                         <form method="POST" action="<?php echo e(route('cart.add', $product)); ?>" class="w-full">
                                             <?php echo csrf_field(); ?>
@@ -186,12 +186,7 @@
                                             <span>Out</span>
                                         </button>
                                     <?php endif; ?>
-                                <?php else: ?>
-                                    <a href="<?php echo e(route('customers.login')); ?>" class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-accent-500 to-accent-600 text-white text-xs md:text-sm font-semibold shadow-md hover:from-accent-600 hover:to-accent-700 transition">
-                                        <i class="fas fa-sign-in-alt"></i>
-                                        <span>Login</span>
-                                    </a>
-                                <?php endif; ?>
+                                
                             </div>
                         </div>
                     </div>

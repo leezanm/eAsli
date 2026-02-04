@@ -195,29 +195,7 @@
     </nav>
 
     <!-- Alert Messages -->
-    <div class="max-w-7xl mx-auto px-4 py-4">
-        <?php if($errors->any()): ?>
-            <div class="bg-red-50 border-l-4 border-red-500 rounded-lg p-5 mb-4 shadow-md">
-                <h3 class="text-red-700 font-bold mb-3 text-lg"><i class="fas fa-exclamation-circle mr-2"></i>Ada Kesalahan!</h3>
-                <ul class="text-red-600 text-sm space-y-2">
-                    <?php $__currentLoopData = $errors->all(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $error): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <li class="flex items-center"><i class="fas fa-times-circle mr-2"></i><?php echo e($error); ?></li>
-                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                </ul>
-            </div>
-        <?php endif; ?>
-
-        <?php if(session('success')): ?>
-            <div class="bg-green-50 border-l-4 border-green-500 rounded-lg p-5 mb-4 flex justify-between items-start shadow-md">
-                <div>
-                    <p class="text-green-700 font-semibold"><i class="fas fa-check-circle mr-2"></i><?php echo e(session('success')); ?></p>
-                </div>
-                <button onclick="this.parentElement.style.display='none';" class="text-green-600 hover:text-green-800 text-xl">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        <?php endif; ?>
-    </div>
+    
 
     <!-- Page Content (offset for fixed navbar height) -->
     <main class="min-h-screen pt-24 lg:pt-28">

@@ -222,7 +222,7 @@
     </nav>
 
     <!-- Alert Messages -->
-    <div class="max-w-7xl mx-auto px-4 py-4">
+    {{-- <div class="max-w-7xl mx-auto px-4 py-4">
         @if ($errors->any())
             <div class="bg-red-50 border-l-4 border-red-500 rounded-lg p-5 mb-4 shadow-md">
                 <h3 class="text-red-700 font-bold mb-3 text-lg"><i class="fas fa-exclamation-circle mr-2"></i>Ada Kesalahan!</h3>
@@ -244,7 +244,7 @@
                 </button>
             </div>
         @endif
-    </div>
+    </div> --}}
 
     <!-- Page Content (offset for fixed navbar height) -->
     <main class="min-h-screen pt-24 lg:pt-28">

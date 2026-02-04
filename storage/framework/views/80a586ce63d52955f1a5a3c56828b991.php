@@ -12,7 +12,7 @@
             </h1>
             <p class="mt-2 text-neutral-600 text-sm md:text-base">Review items you want to purchase before checkout.</p>
         </div>
-        <a href="<?php echo e(route('products.index')); ?>" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+        <a href="javascript:void(0);" onclick="handleBackButton();" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
             <i class="fas fa-arrow-left"></i>
             <span>Continue Shopping</span>
         </a>
@@ -103,16 +103,39 @@
                     </a>
                 <?php else: ?>
                     <!-- Customer is NOT logged in - show register button -->
-                    <a href="<?php echo e(route('customers.create', ['redirect_to' => route('cart.checkout')])); ?>" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-accent-500 to-accent-600 text-white text-sm font-semibold shadow-md hover:from-accent-600 hover:to-accent-700 transition mt-4">
-                        <i class="fas fa-user-plus"></i>
-                        <span>Create Account to Checkout</span>
+                    <a href="<?php echo e(route('customers.login', ['redirect_to' => route('cart.checkout')])); ?>" class="w-full inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-accent-500 to-accent-600 text-white text-sm font-semibold shadow-md hover:from-accent-600 hover:to-accent-700 transition mt-4">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>Login to Checkout</span>
                     </a>
-                    <p class="text-xs text-neutral-500 text-center mt-3">Create an account to complete your purchase</p>
+                    
                 <?php endif; ?>                </form>
             </div>
         </div>
     <?php endif; ?>
 </div>
+
+<script>
+function handleBackButton() {
+    const referrer = document.referrer;
+
+    // Check if referrer contains home, products, or shops otherwise go to home page
+
+    if (referrer.includes('/') &&
+        (referrer.includes('home') ||
+         referrer.includes('products') ||
+         referrer.includes('shops'))) {
+        // Go back to previous page
+        window.history.back();
+        //  referrer === window.location.origin + '/' ||
+        //  referrer.includes('localhost:8000'))) {
+        // Go back to previous page
+       // window.history.back();
+    } else {
+        // Default to home page
+        window.location.href = '<?php echo e(route("home")); ?>';
+    }
+}
+</script>
 <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Users/leezanm/eAsli-app/resources/views/cart/index.blade.php ENDPATH**/ ?>

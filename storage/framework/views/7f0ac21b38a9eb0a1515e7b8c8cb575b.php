@@ -1,8 +1,6 @@
-@extends('layouts.app')
+<?php $__env->startSection('title', 'View Sale'); ?>
 
-@section('title', 'View Sale')
-
-@section('content')
+<?php $__env->startSection('content'); ?>
 <div class="max-w-4xl mx-auto px-4 py-10">
     <!-- Page header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
@@ -13,19 +11,19 @@
                 </span>
                 <span>Sale Details</span>
             </h1>
-            <p class="mt-2 text-neutral-600 text-sm md:text-base">Transaction #{{ $sale->id }}</p>
+            <p class="mt-2 text-neutral-600 text-sm md:text-base">Transaction #<?php echo e($sale->id); ?></p>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ route('sales.index') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
+            <a href="<?php echo e(route('sales.index')); ?>" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg border border-neutral-300 text-sm font-medium text-neutral-700 hover:bg-neutral-50 transition">
                 <i class="fas fa-arrow-left"></i>
                 <span>Back to Sales</span>
             </a>
-            @auth('artisan')
-                <a href="{{ route('sales.edit', $sale) }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold shadow-md transition">
+            <?php if(auth()->guard('artisan')->check()): ?>
+                <a href="<?php echo e(route('sales.edit', $sale)); ?>" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-600 hover:bg-primary-700 text-white text-sm font-semibold shadow-md transition">
                     <i class="fas fa-edit"></i>
                     <span>Edit</span>
                 </a>
-             @endauth
+             <?php endif; ?>
         </div>
     </div>
 
@@ -37,14 +35,15 @@
             <div class="bg-white rounded-2xl shadow-md border border-secondary-200 p-6">
                 <div class="flex items-start justify-between gap-4 mb-6">
                     <div>
-                        <h2 class="text-2xl font-bold text-neutral-900">Transaction #{{ $sale->id }}</h2>
+                        <h2 class="text-2xl font-bold text-neutral-900">Transaction #<?php echo e($sale->id); ?></h2>
                         <p class="text-sm text-neutral-600 mt-1 flex items-center gap-1">
                             <i class="fas fa-calendar-alt text-primary-600"></i>
-                            {{ $sale->sale_date->format('d M Y, H:i') }}
+                            <?php echo e($sale->sale_date->format('d M Y, H:i')); ?>
+
                         </p>
                     </div>
                     <span class="inline-flex items-center px-4 py-2 rounded-full font-semibold
-                        @php
+                        <?php
                             $paymentStatus = $sale->payment_status ?? 'pending';
                             if ($paymentStatus === 'paid') {
                                 $badgeClass = 'bg-emerald-50 text-emerald-700 border border-emerald-100';
@@ -56,10 +55,11 @@
                                 $badgeClass = 'bg-amber-50 text-amber-700 border border-amber-100';
                                 $icon = 'fa-clock';
                             }
-                        @endphp
-                        {{ $badgeClass }}">
-                        <i class="fas {{ $icon }} mr-2"></i>
-                        {{ ucfirst(str_replace('_', ' ', $paymentStatus)) }}
+                        ?>
+                        <?php echo e($badgeClass); ?>">
+                        <i class="fas <?php echo e($icon); ?> mr-2"></i>
+                        <?php echo e(ucfirst(str_replace('_', ' ', $paymentStatus))); ?>
+
                     </span>
                 </div>
                 <div class="border-t border-neutral-200 pt-6">
@@ -70,7 +70,7 @@
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-600 font-semibold uppercase">Quantity</p>
-                                <p class="text-xl font-bold text-neutral-900">{{ $sale->quantity }} unit{{ $sale->quantity > 1 ? 's' : '' }}</p>
+                                <p class="text-xl font-bold text-neutral-900"><?php echo e($sale->quantity); ?> unit<?php echo e($sale->quantity > 1 ? 's' : ''); ?></p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
@@ -79,7 +79,7 @@
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-600 font-semibold uppercase">Unit Price</p>
-                                <p class="text-xl font-bold text-neutral-900">RM {{ number_format($sale->product->price, 2) }}</p>
+                                <p class="text-xl font-bold text-neutral-900">RM <?php echo e(number_format($sale->product->price, 2)); ?></p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3">
@@ -88,7 +88,7 @@
                             </div>
                             <div>
                                 <p class="text-xs text-neutral-600 font-semibold uppercase">Total Amount</p>
-                                <p class="text-xl font-bold text-secondary-900">RM {{ number_format($sale->total_price, 2) }}</p>
+                                <p class="text-xl font-bold text-secondary-900">RM <?php echo e(number_format($sale->total_price, 2)); ?></p>
                             </div>
                         </div>
                     </div>
@@ -105,31 +105,32 @@
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <p class="text-sm text-neutral-600 font-semibold">Product Name</p>
-                            <p class="text-lg font-semibold text-neutral-900 mt-1">{{ $sale->product->name }}</p>
+                            <p class="text-lg font-semibold text-neutral-900 mt-1"><?php echo e($sale->product->name); ?></p>
                         </div>
                         <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-primary-50 text-primary-700">
-                            {{ ucfirst($sale->product->category) }}
+                            <?php echo e(ucfirst($sale->product->category)); ?>
+
                         </span>
                     </div>
-                    @if($sale->product->description)
+                    <?php if($sale->product->description): ?>
                         <div>
                             <p class="text-sm text-neutral-600 font-semibold">Description</p>
-                            <p class="text-neutral-700 mt-1">{{ $sale->product->description }}</p>
+                            <p class="text-neutral-700 mt-1"><?php echo e($sale->product->description); ?></p>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
             <!-- Notes Card -->
-            @if($sale->notes)
+            <?php if($sale->notes): ?>
                 <div class="bg-white rounded-2xl shadow-md border border-secondary-200 p-6">
                     <h3 class="text-lg font-semibold text-neutral-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-sticky-note text-accent-600"></i>
                         Notes
                     </h3>
-                    <p class="text-neutral-700 bg-neutral-50 rounded-lg p-4 border-l-4 border-accent-500">{{ $sale->notes }}</p>
+                    <p class="text-neutral-700 bg-neutral-50 rounded-lg p-4 border-l-4 border-accent-500"><?php echo e($sale->notes); ?></p>
                 </div>
-            @endif
+            <?php endif; ?>
         </div>
 
         <!-- Right column - Sidebar -->
@@ -143,20 +144,20 @@
                 <div class="space-y-3">
                     <div>
                         <p class="text-xs text-neutral-600 font-semibold">Name</p>
-                        <p class="text-neutral-900 font-semibold mt-1">{{ $sale->artisan->name }}</p>
+                        <p class="text-neutral-900 font-semibold mt-1"><?php echo e($sale->artisan->name); ?></p>
                     </div>
-                    @if($sale->artisan->email)
+                    <?php if($sale->artisan->email): ?>
                         <div>
                             <p class="text-xs text-neutral-600 font-semibold">Email</p>
-                            <a href="mailto:{{ $sale->artisan->email }}" class="text-primary-700 hover:text-primary-800 font-semibold mt-1">{{ $sale->artisan->email }}</a>
+                            <a href="mailto:<?php echo e($sale->artisan->email); ?>" class="text-primary-700 hover:text-primary-800 font-semibold mt-1"><?php echo e($sale->artisan->email); ?></a>
                         </div>
-                    @endif
-                    @if($sale->artisan->phone)
+                    <?php endif; ?>
+                    <?php if($sale->artisan->phone): ?>
                         <div>
                             <p class="text-xs text-neutral-600 font-semibold">Phone</p>
-                            <a href="tel:{{ $sale->artisan->phone }}" class="text-primary-700 hover:text-primary-800 font-semibold mt-1">{{ $sale->artisan->phone }}</a>
+                            <a href="tel:<?php echo e($sale->artisan->phone); ?>" class="text-primary-700 hover:text-primary-800 font-semibold mt-1"><?php echo e($sale->artisan->phone); ?></a>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
@@ -169,31 +170,31 @@
                 <div class="space-y-3">
                     <div>
                         <p class="text-xs text-neutral-600 font-semibold">Name</p>
-                        <p class="text-neutral-900 font-semibold mt-1">{{ $sale->customer->name }}</p>
+                        <p class="text-neutral-900 font-semibold mt-1"><?php echo e($sale->customer->name); ?></p>
                     </div>
-                    @if($sale->customer->email)
+                    <?php if($sale->customer->email): ?>
                         <div>
                             <p class="text-xs text-neutral-600 font-semibold">Email</p>
-                            <a href="mailto:{{ $sale->customer->email }}" class="text-accent-700 hover:text-accent-800 font-semibold mt-1 break-all">{{ $sale->customer->email }}</a>
+                            <a href="mailto:<?php echo e($sale->customer->email); ?>" class="text-accent-700 hover:text-accent-800 font-semibold mt-1 break-all"><?php echo e($sale->customer->email); ?></a>
                         </div>
-                    @endif
-                    @if($sale->customer->phone)
+                    <?php endif; ?>
+                    <?php if($sale->customer->phone): ?>
                         <div>
                             <p class="text-xs text-neutral-600 font-semibold">Phone</p>
-                            <a href="tel:{{ $sale->customer->phone }}" class="text-accent-700 hover:text-accent-800 font-semibold mt-1">{{ $sale->customer->phone }}</a>
+                            <a href="tel:<?php echo e($sale->customer->phone); ?>" class="text-accent-700 hover:text-accent-800 font-semibold mt-1"><?php echo e($sale->customer->phone); ?></a>
                         </div>
-                    @endif
-                    @if($sale->customer->address)
+                    <?php endif; ?>
+                    <?php if($sale->customer->address): ?>
                         <div>
                             <p class="text-xs text-neutral-600 font-semibold">Address</p>
-                            <p class="text-neutral-700 mt-1 text-sm">{{ $sale->customer->address }}</p>
+                            <p class="text-neutral-700 mt-1 text-sm"><?php echo e($sale->customer->address); ?></p>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
 
             <!-- Shop Card -->
-            @if($sale->product->artisan->shops->first())
+            <?php if($sale->product->artisan->shops->first()): ?>
                 <div class="bg-white rounded-2xl shadow-md border border-secondary-200 p-6">
                     <h3 class="text-sm font-semibold text-neutral-900 uppercase tracking-wider mb-4 flex items-center gap-2">
                         <i class="fas fa-store text-secondary-600"></i>
@@ -202,23 +203,23 @@
                     <div class="space-y-3">
                         <div>
                             <p class="text-xs text-neutral-600 font-semibold">Name</p>
-                            <a href="{{ route('shops.show', $sale->product->artisan->shops->first()->id) }}" class="text-secondary-700 hover:text-secondary-800 font-semibold mt-1">{{ $sale->product->artisan->shops->first()->name }}</a>
+                            <a href="<?php echo e(route('shops.show', $sale->product->artisan->shops->first()->id)); ?>" class="text-secondary-700 hover:text-secondary-800 font-semibold mt-1"><?php echo e($sale->product->artisan->shops->first()->name); ?></a>
                         </div>
-                        @if($sale->product->artisan->shops->first()->address)
+                        <?php if($sale->product->artisan->shops->first()->address): ?>
                             <div>
                                 <p class="text-xs text-neutral-600 font-semibold">Address</p>
-                                <p class="text-neutral-700 mt-1 text-sm">{{ $sale->product->artisan->shops->first()->address }}</p>
+                                <p class="text-neutral-700 mt-1 text-sm"><?php echo e($sale->product->artisan->shops->first()->address); ?></p>
                             </div>
-                        @endif
-                        @if($sale->product->artisan->shops->first()->state)
+                        <?php endif; ?>
+                        <?php if($sale->product->artisan->shops->first()->state): ?>
                             <div>
                                 <p class="text-xs text-neutral-600 font-semibold">State</p>
-                                <p class="text-neutral-700 mt-1 text-sm">{{ $sale->product->artisan->shops->first()->state }}</p>
+                                <p class="text-neutral-700 mt-1 text-sm"><?php echo e($sale->product->artisan->shops->first()->state); ?></p>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
-            @endif
+            <?php endif; ?>
 
             <!-- Meta Info Card -->
             <div class="bg-neutral-50 rounded-2xl border border-neutral-200 p-6">
@@ -226,25 +227,26 @@
                 <div class="space-y-3 text-sm">
                     <div class="flex justify-between items-center">
                         <span class="text-neutral-600">Created</span>
-                        <span class="text-neutral-900 font-semibold">{{ $sale->created_at->format('d M Y H:i') }}</span>
+                        <span class="text-neutral-900 font-semibold"><?php echo e($sale->created_at->format('d M Y H:i')); ?></span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-neutral-600">Updated</span>
-                        <span class="text-neutral-900 font-semibold">{{ $sale->updated_at->format('d M Y H:i') }}</span>
+                        <span class="text-neutral-900 font-semibold"><?php echo e($sale->updated_at->format('d M Y H:i')); ?></span>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-neutral-600">Payment Status</span>
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
-                            @php
+                            <?php
                                 $paymentStatus = $sale->payment_status ?? 'pending';
                                 $statusColor = match($paymentStatus) {
                                     'paid' => 'bg-emerald-50 text-emerald-700',
                                     'failed' => 'bg-red-50 text-red-700',
                                     default => 'bg-amber-50 text-amber-700',
                                 };
-                            @endphp
-                            {{ $statusColor }}">
-                            {{ ucfirst($paymentStatus) }}
+                            ?>
+                            <?php echo e($statusColor); ?>">
+                            <?php echo e(ucfirst($paymentStatus)); ?>
+
                         </span>
                     </div>
                 </div>
@@ -252,4 +254,6 @@
         </div>
     </div>
 </div>
-@endsection
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layouts.app', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Users/leezanm/eAsli-app/resources/views/sales/show.blade.php ENDPATH**/ ?>

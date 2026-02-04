@@ -50,6 +50,7 @@
                 <table class="w-full text-sm">
                     <thead class="bg-neutral-50 border-b border-neutral-200">
                         <tr>
+                            <th class="px-6 py-3 text-left font-semibold text-neutral-700">Order ID</th>
                             <th class="px-6 py-3 text-left font-semibold text-neutral-700">Date</th>
                             <th class="px-6 py-3 text-left font-semibold text-neutral-700">Product</th>
                             <th class="px-6 py-3 text-left font-semibold text-neutral-700">Artisan</th>
@@ -62,6 +63,10 @@
                     <tbody class="divide-y divide-neutral-100">
                         <?php $__currentLoopData = $sales; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $sale): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <tr class="hover:bg-neutral-50 transition">
+                                <td class="px-6 py-4 font-bold text-primary-700">
+                                    #<?php echo e($sale->id); ?>
+
+                                </td>
                                 <td class="px-6 py-4 font-medium text-neutral-900">
                                     <?php echo e($sale->sale_date->format('d M Y')); ?>
 

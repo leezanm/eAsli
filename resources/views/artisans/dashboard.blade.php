@@ -130,7 +130,7 @@
                         <i class="fas fa-chevron-right text-xs text-neutral-400"></i>
                     </a>
 
-                    <a href="{{ route('sales.create') }}" class="flex items-center justify-between w-full px-4 py-3 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 text-sm font-medium text-neutral-800 transition">
+                    {{-- <a href="{{ route('sales.create') }}" class="flex items-center justify-between w-full px-4 py-3 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 text-sm font-medium text-neutral-800 transition">
                         <span class="flex items-center gap-3">
                             <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-primary-100 text-primary-700">
                                 <i class="fas fa-receipt"></i>
@@ -141,7 +141,7 @@
                             </span>
                         </span>
                         <i class="fas fa-chevron-right text-xs text-neutral-400"></i>
-                    </a>
+                    </a> --}}
 
                     <a href="{{ route('reports.index') }}" class="flex items-center justify-between w-full px-4 py-3 rounded-xl border border-neutral-200 hover:border-primary-300 hover:bg-primary-50 text-sm font-medium text-neutral-800 transition">
                         <span class="flex items-center gap-3">

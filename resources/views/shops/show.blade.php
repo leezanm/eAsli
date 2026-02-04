@@ -171,7 +171,7 @@
                             <!-- Action Button -->
                             <div class="md:col-span-2">
                                 <p class="md:hidden text-xs text-neutral-600 font-semibold mb-2">ACTION</p>
-                                @if(auth('customer')->check())
+                                {{-- @if(auth('customer')->check()) --}}
                                     @if($product->stock > 0)
                                         <form method="POST" action="{{ route('cart.add', $product) }}" class="w-full">
                                             @csrf
@@ -187,12 +187,12 @@
                                             <span>Out</span>
                                         </button>
                                     @endif
-                                @else
+                                {{-- @else
                                     <a href="{{ route('customers.login') }}" class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-accent-500 to-accent-600 text-white text-xs md:text-sm font-semibold shadow-md hover:from-accent-600 hover:to-accent-700 transition">
                                         <i class="fas fa-sign-in-alt"></i>
                                         <span>Login</span>
                                     </a>
-                                @endif
+                                @endif --}}
                             </div>
                         </div>
                     </div>
