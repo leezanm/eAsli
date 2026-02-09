@@ -92,7 +92,7 @@ class ReportController extends Controller
 
         $report = Report::create([
             'artisan_id' => Auth::guard('artisan')->check() ? Auth::guard('artisan')->user()->id : null,
-            'type' => 'sales',
+            'report_type' => 'sales',
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'content' => json_encode($content),
@@ -137,7 +137,7 @@ class ReportController extends Controller
 
         $report = Report::create([
             'artisan_id' => Auth::guard('artisan')->check() ? Auth::guard('artisan')->user()->id : null,
-            'type' => 'stock',
+            'report_type' => 'stock',
             'start_date' => now()->format('Y-m-d'),
             'end_date' => now()->format('Y-m-d'),
             'content' => json_encode($content),
@@ -187,7 +187,7 @@ class ReportController extends Controller
 
         $report = Report::create([
             'artisan_id' => Auth::guard('artisan')->check() ? Auth::guard('artisan')->user()->id : null,
-            'type' => 'performance',
+            'report_type' => 'performance',
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'content' => json_encode($content),

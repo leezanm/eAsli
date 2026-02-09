@@ -9,7 +9,6 @@ class Report extends Model
 {
     protected $fillable = [
         'artisan_id',
-        'type',
         'report_type',
         'start_date',
         'end_date',
