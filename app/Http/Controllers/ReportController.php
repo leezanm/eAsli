@@ -96,6 +96,7 @@ class ReportController extends Controller
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'content' => json_encode($content),
+            'status' => 'generated',
         ]);
 
         return redirect()->route('reports.index')->with('success', 'Sales Report generated successfully!');
@@ -141,6 +142,7 @@ class ReportController extends Controller
             'start_date' => now()->format('Y-m-d'),
             'end_date' => now()->format('Y-m-d'),
             'content' => json_encode($content),
+            'status' => 'generated',
         ]);
 
         return redirect()->route('reports.index')->with('success', 'Stock Report generated successfully!');
@@ -191,6 +193,7 @@ class ReportController extends Controller
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
             'content' => json_encode($content),
+            'status' => 'generated',
         ]);
 
         return redirect()->route('reports.index')->with('success', 'Performance Report generated successfully!');

@@ -227,7 +227,8 @@
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 align-top text-right">
-                                    <a href="@php echo route('reports.show', $report); @endphp" class="text-primary-700 hover:text-primary-900">View</a>
+                                    <a href="@php echo route('reports.show', $report); @endphp" class="text-primary-700 hover:text-primary-900">                <i class="fas fa-eye text-md text-neutral-300 mb-4"></i>
+View</a>
                                 </td>
                             </tr>
                             @endforeach

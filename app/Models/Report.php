@@ -15,6 +15,7 @@ class Report extends Model
         'content',
         'file_path',
         'format',
+        'status',
     ];
 
     protected $casts = [
