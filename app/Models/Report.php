@@ -9,6 +9,7 @@ class Report extends Model
 {
     protected $fillable = [
         'artisan_id',
+        'user_id',
         'report_type',
         'start_date',
         'end_date',
@@ -26,6 +27,11 @@ class Report extends Model
     public function artisan(): BelongsTo
     {
         return $this->belongsTo(Artisan::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function isExpired(): bool

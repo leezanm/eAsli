@@ -9,6 +9,7 @@ use App\Http\Controllers\SaleController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BahagianController;
 use App\Models\Product;
 use App\Models\Shop;
 use App\Models\State;
@@ -43,6 +44,17 @@ Route::prefix('admin')->group(function () {
     Route::post('/authenticate', [AdminController::class, 'authenticate'])->name('admin.authenticate');
     Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+});
+
+// Bahagian Routes
+Route::prefix('bahagians')->group(function () {
+    Route::get('/', [BahagianController::class, 'index'])->name('bahagians.index');
+    Route::get('/create', [BahagianController::class, 'create'])->name('bahagians.create');
+    Route::post('/', [BahagianController::class, 'store'])->name('bahagians.store');
+    Route::get('/{bahagian}', [BahagianController::class, 'show'])->name('bahagians.show');
+    Route::get('/{bahagian}/edit', [BahagianController::class, 'edit'])->name('bahagians.edit');
+    Route::put('/{bahagian}', [BahagianController::class, 'update'])->name('bahagians.update');
+    Route::delete('/{bahagian}', [BahagianController::class, 'destroy'])->name('bahagians.destroy');
 });
 
 // Artisan Routes
@@ -139,6 +151,7 @@ Route::prefix('sales')->group(function () {
 Route::prefix('reports')->group(function () {
     Route::get('/', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/{report}', [ReportController::class, 'show'])->name('reports.show');
+    Route::delete('/{report}', [ReportController::class, 'destroy'])->name('reports.destroy');
     Route::post('/sales', [ReportController::class, 'generateSalesReport'])->name('reports.sales');
     Route::post('/stock', [ReportController::class, 'generateStockReport'])->name('reports.stock');
     Route::post('/performance', [ReportController::class, 'generatePerformanceReport'])->name('reports.performance');

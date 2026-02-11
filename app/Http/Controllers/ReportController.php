@@ -20,6 +20,15 @@ class ReportController extends Controller
             $reports = Report::where('artisan_id', $artisanId)
                 ->latest()
                 ->paginate(10);
+        } elseif (Auth::check()) {
+            // Admin view - only show their own reports
+            $userId = Auth::user()->id;
+            $totalSales = Sale::count();
+            $totalRevenue = Sale::sum('total_price');
+            $totalProducts = Product::count();
+            $reports = Report::where('user_id', $userId)
+                ->latest()
+                ->paginate(10);
         } else {
             $totalSales = Sale::count();
             $totalRevenue = Sale::sum('total_price');
@@ -92,6 +101,7 @@ class ReportController extends Controller
 
         $report = Report::create([
             'artisan_id' => Auth::guard('artisan')->check() ? Auth::guard('artisan')->user()->id : null,
+            'user_id' => Auth::check() && !Auth::guard('artisan')->check() ? Auth::user()->id : null,
             'report_type' => 'sales',
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
@@ -133,11 +143,22 @@ class ReportController extends Controller
                     'price' => $product->price,
                 ];
             })->toArray(),
+            'all_products' => $products->map(function($product) {
+                return [
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'category' => $product->category,
+                    'stock' => $product->stock,
+                    'price' => $product->price,
+                    'status' => $product->status,
+                ];
+            })->toArray(),
             'generated_at' => now()->toIso8601String(),
         ];
 
         $report = Report::create([
             'artisan_id' => Auth::guard('artisan')->check() ? Auth::guard('artisan')->user()->id : null,
+            'user_id' => Auth::check() && !Auth::guard('artisan')->check() ? Auth::user()->id : null,
             'report_type' => 'stock',
             'start_date' => now()->format('Y-m-d'),
             'end_date' => now()->format('Y-m-d'),
@@ -189,6 +210,7 @@ class ReportController extends Controller
 
         $report = Report::create([
             'artisan_id' => Auth::guard('artisan')->check() ? Auth::guard('artisan')->user()->id : null,
+            'user_id' => Auth::check() && !Auth::guard('artisan')->check() ? Auth::user()->id : null,
             'report_type' => 'performance',
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
@@ -201,12 +223,36 @@ class ReportController extends Controller
 
     public function show(Report $report)
     {
+        // Check authorization for artisans
+        if (Auth::guard('artisan')->check()) {
+            if ($report->artisan_id !== Auth::guard('artisan')->user()->id) {
+                abort(403, 'Unauthorized: You can only view your own reports.');
+            }
+        } elseif (Auth::check()) {
+            // Check authorization for admin
+            if ($report->user_id !== Auth::user()->id) {
+                abort(403, 'Unauthorized: You can only view your own reports.');
+            }
+        }
+
         $content = json_decode($report->content, true);
         return view('reports.show', compact('report', 'content'));
     }
 
     public function destroy(Report $report)
     {
+        // Check authorization for artisans
+        if (Auth::guard('artisan')->check()) {
+            if ($report->artisan_id !== Auth::guard('artisan')->user()->id) {
+                abort(403, 'Unauthorized: You can only delete your own reports.');
+            }
+        } elseif (Auth::check()) {
+            // Check authorization for admin
+            if ($report->user_id !== Auth::user()->id) {
+                abort(403, 'Unauthorized: You can only delete your own reports.');
+            }
+        }
+
         $report->delete();
         return redirect()->route('reports.index')->with('success', 'Report deleted successfully');
     }

@@ -56,12 +56,16 @@ class ProductController extends Controller
 
     public function create()
     {
-        if (!Auth::guard('artisan')->check()) {
-            return redirect()->route('artisans.login');
+        if (Auth::guard('artisan')->check()) {
+            $shops = Auth::guard('artisan')->user()->shops;
+            return view('products.form', compact('shops'));
+        } elseif (Auth::check()) {
+            // Admin can create products without shops
+            $shops = collect();
+            return view('products.form', compact('shops'));
         }
 
-        $shops = Auth::guard('artisan')->user()->shops;
-        return view('products.form', compact('shops'));
+        return redirect()->route('artisans.login');
     }
 
     public function store(Request $request)
@@ -111,6 +115,11 @@ class ProductController extends Controller
             abort(403);
         }
 
+        // Admin can edit any product, artisan can only edit their own
+        if (!Auth::guard('artisan')->check() && !Auth::check()) {
+            abort(403);
+        }
+
         // Show the same form used for creation, pre-filled with product data
         return view('products.form', compact('product'));
     }
@@ -119,6 +128,11 @@ class ProductController extends Controller
     {
         // Artisans may only update their own products
         if (Auth::guard('artisan')->check() && $product->artisan_id !== Auth::guard('artisan')->id()) {
+            abort(403);
+        }
+
+        // Check if user is authenticated (either artisan or admin)
+        if (!Auth::guard('artisan')->check() && !Auth::check()) {
             abort(403);
         }
 
@@ -159,6 +173,11 @@ class ProductController extends Controller
     {
         // Artisans may only delete their own products
         if (Auth::guard('artisan')->check() && $product->artisan_id !== Auth::guard('artisan')->id()) {
+            abort(403);
+        }
+
+        // Check if user is authenticated (either artisan or admin)
+        if (!Auth::guard('artisan')->check() && !Auth::check()) {
             abort(403);
         }
 

@@ -46,6 +46,37 @@
 
                     @if(!isset($product) && auth('artisan')->check())
                         <input type="hidden" name="artisan_id" value="{{ auth('artisan')->id() }}">
+                    @elseif(!isset($product) && auth('web')->check())
+                        <!-- Admin creating new product - select artisan -->
+                        <div class="mb-6">
+                            <label for="artisan_id" class="block text-sm font-bold text-primary-900 mb-2 uppercase tracking-wide">
+                                <i class="fas fa-user-tie text-primary-600 mr-2"></i>Select Artisan *
+                            </label>
+                            <select id="artisan_id" name="artisan_id"
+                                    class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition text-neutral-900 font-medium @error('artisan_id') border-red-500 @enderror"
+                                    required>
+                                <option value="">Select an artisan</option>
+                                @foreach(\App\Models\Artisan::where('status', 'active')->orderBy('name')->get() as $artisan)
+                                    <option value="{{ $artisan->id }}" {{ old('artisan_id') == $artisan->id ? 'selected' : '' }}>
+                                        {{ $artisan->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('artisan_id')
+                                <span class="text-red-600 text-sm mt-1 flex items-center"><i class="fas fa-exclamation-circle mr-1"></i>{{ $message }}</span>
+                            @enderror
+                        </div>
+                    @elseif(isset($product))
+                        <!-- Show artisan info when editing -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-primary-900 mb-2 uppercase tracking-wide">
+                                <i class="fas fa-user-tie text-primary-600 mr-2"></i>Artisan
+                            </label>
+                            <div class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg bg-neutral-100 text-neutral-700 font-medium">
+                                {{ $product->artisan->name ?? 'N/A' }}
+                            </div>
+                            <input type="hidden" name="artisan_id" value="{{ $product->artisan_id }}">
+                        </div>
                     @endif
 
                     <div class="mb-6">

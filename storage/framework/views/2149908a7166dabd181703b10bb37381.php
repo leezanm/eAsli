@@ -27,6 +27,14 @@
                     <i class="fas fa-arrow-left mr-2"></i>
                     Back to Reports
                 </a>
+                <form action="<?php echo e(route('reports.destroy', $report)); ?>" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this report?');">
+                    <?php echo csrf_field(); ?>
+                    <?php echo method_field('DELETE'); ?>
+                    <button type="submit" class="inline-flex items-center px-4 py-2 rounded-lg border border-red-300 text-red-700 hover:bg-red-50 text-sm font-medium transition">
+                        <i class="fas fa-trash mr-2"></i>
+                        Delete Report
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -252,13 +260,20 @@
                     </table>
                 </div>
             </div>
-        <?php elseif($report->report_type === 'stock' && isset($content['low_stock_products'])): ?>
+        <?php elseif($report->report_type === 'stock'): ?>
             <!-- Stock Report Details -->
             <div class="bg-white rounded-2xl shadow-sm border border-neutral-100 p-6 mb-6">
-                <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wide mb-4 flex items-center gap-2">
-                    <i class="fas fa-box text-amber-600"></i>
-                    Product Inventory
-                </h2>
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-sm font-semibold text-neutral-900 uppercase tracking-wide flex items-center gap-2">
+                        <i class="fas fa-box text-amber-600"></i>
+                        Product Inventory
+                    </h2>
+                    <?php if(isset($content['all_products']) && count($content['all_products']) > 0): ?>
+                        <span class="text-xs font-semibold text-neutral-600">
+                            <?php echo e(count($content['all_products'])); ?> Products
+                        </span>
+                    <?php endif; ?>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
                         <thead>
@@ -271,70 +286,139 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-neutral-100">
-                            <?php $__empty_1 = true; $__currentLoopData = $content['low_stock_products']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
-                                <tr class="hover:bg-neutral-50">
-                                    <td class="px-4 py-3 text-neutral-900 font-medium">
-                                        <?php if(is_object($product)): ?>
-                                            <?php echo e($product->name ?? '-'); ?>
+                            <?php if(isset($content['all_products']) && count($content['all_products']) > 0): ?>
+                                <?php $__empty_1 = true; $__currentLoopData = $content['all_products']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <tr class="hover:bg-neutral-50">
+                                        <td class="px-4 py-3 text-neutral-900 font-medium">
+                                            <?php if(is_object($product)): ?>
+                                                <?php echo e($product->name ?? '-'); ?>
 
-                                        <?php else: ?>
-                                            <?php echo e($product['name'] ?? '-'); ?>
+                                            <?php else: ?>
+                                                <?php echo e($product['name'] ?? '-'); ?>
 
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="px-4 py-3 text-neutral-600">
-                                        <?php if(is_object($product)): ?>
-                                            <?php echo e($product->category ?? '-'); ?>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="px-4 py-3 text-neutral-600">
+                                            <?php if(is_object($product)): ?>
+                                                <?php echo e($product->category ?? '-'); ?>
 
-                                        <?php else: ?>
-                                            <?php echo e($product['category'] ?? '-'); ?>
+                                            <?php else: ?>
+                                                <?php echo e($product['category'] ?? '-'); ?>
 
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="px-4 py-3 text-right font-semibold">
-                                        <?php
-                                            $stock = is_object($product) ? $product->stock : $product['stock'];
-                                        ?>
-                                        <span class="inline-flex px-3 py-1 rounded-full <?php echo e($stock < 5 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'); ?>">
-                                            <?php echo e($stock); ?>
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="px-4 py-3 text-right font-semibold">
+                                            <?php
+                                                $stock = is_object($product) ? $product->stock : $product['stock'];
+                                            ?>
+                                            <span class="inline-flex px-3 py-1 rounded-full <?php echo e($stock < 5 ? 'bg-red-100 text-red-700' : ($stock < 10 ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700')); ?>">
+                                                <?php echo e($stock); ?>
 
-                                        </span>
-                                    </td>
-                                    <td class="px-4 py-3 text-right text-neutral-600">
-                                        <?php if(is_object($product)): ?>
-                                            RM <?php echo e(number_format($product->price ?? 0, 2)); ?>
-
-                                        <?php else: ?>
-                                            RM <?php echo e(number_format($product['price'] ?? 0, 2)); ?>
-
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="px-4 py-3 text-center">
-                                        <?php
-                                            $stock = is_object($product) ? $product->stock : $product['stock'];
-                                        ?>
-                                        <?php if($stock < 5): ?>
-                                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
-                                                <i class="fas fa-exclamation-circle"></i>
-                                                Critical
                                             </span>
-                                        <?php elseif($stock < 10): ?>
-                                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
-                                                <i class="fas fa-triangle-exclamation"></i>
-                                                Low
+                                        </td>
+                                        <td class="px-4 py-3 text-right text-neutral-600">
+                                            <?php if(is_object($product)): ?>
+                                                RM <?php echo e(number_format($product->price ?? 0, 2)); ?>
+
+                                            <?php else: ?>
+                                                RM <?php echo e(number_format($product['price'] ?? 0, 2)); ?>
+
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <?php
+                                                $stock = is_object($product) ? $product->stock : $product['stock'];
+                                            ?>
+                                            <?php if($stock < 5): ?>
+                                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                                    <i class="fas fa-exclamation-circle"></i>
+                                                    Critical
+                                                </span>
+                                            <?php elseif($stock < 10): ?>
+                                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
+                                                    <i class="fas fa-triangle-exclamation"></i>
+                                                    Low
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Good
+                                                </span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                    <tr>
+                                        <td colspan="5" class="px-4 py-8 text-center text-neutral-500">No products found</td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <!-- Fallback to low_stock_products for older reports -->
+                                <?php $__empty_1 = true; $__currentLoopData = $content['low_stock_products']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $product): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); $__empty_1 = false; ?>
+                                    <tr class="hover:bg-neutral-50">
+                                        <td class="px-4 py-3 text-neutral-900 font-medium">
+                                            <?php if(is_object($product)): ?>
+                                                <?php echo e($product->name ?? '-'); ?>
+
+                                            <?php else: ?>
+                                                <?php echo e($product['name'] ?? '-'); ?>
+
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="px-4 py-3 text-neutral-600">
+                                            <?php if(is_object($product)): ?>
+                                                <?php echo e($product->category ?? '-'); ?>
+
+                                            <?php else: ?>
+                                                <?php echo e($product['category'] ?? '-'); ?>
+
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="px-4 py-3 text-right font-semibold">
+                                            <?php
+                                                $stock = is_object($product) ? $product->stock : $product['stock'];
+                                            ?>
+                                            <span class="inline-flex px-3 py-1 rounded-full <?php echo e($stock < 5 ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'); ?>">
+                                                <?php echo e($stock); ?>
+
                                             </span>
-                                        <?php else: ?>
-                                            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
-                                                <i class="fas fa-check-circle"></i>
-                                                Good
-                                            </span>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
-                                <tr>
-                                    <td colspan="5" class="px-4 py-8 text-center text-neutral-500">All products have adequate stock</td>
-                                </tr>
+                                        </td>
+                                        <td class="px-4 py-3 text-right text-neutral-600">
+                                            <?php if(is_object($product)): ?>
+                                                RM <?php echo e(number_format($product->price ?? 0, 2)); ?>
+
+                                            <?php else: ?>
+                                                RM <?php echo e(number_format($product['price'] ?? 0, 2)); ?>
+
+                                            <?php endif; ?>
+                                        </td>
+                                        <td class="px-4 py-3 text-center">
+                                            <?php
+                                                $stock = is_object($product) ? $product->stock : $product['stock'];
+                                            ?>
+                                            <?php if($stock < 5): ?>
+                                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-red-100 text-red-700 text-xs font-semibold">
+                                                    <i class="fas fa-exclamation-circle"></i>
+                                                    Critical
+                                                </span>
+                                            <?php elseif($stock < 10): ?>
+                                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
+                                                    <i class="fas fa-triangle-exclamation"></i>
+                                                    Low
+                                                </span>
+                                            <?php else: ?>
+                                                <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
+                                                    <i class="fas fa-check-circle"></i>
+                                                    Good
+                                                </span>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); if ($__empty_1): ?>
+                                    <tr>
+                                        <td colspan="5" class="px-4 py-8 text-center text-neutral-500">All products have adequate stock</td>
+                                    </tr>
+                                <?php endif; ?>
                             <?php endif; ?>
                         </tbody>
                     </table>
