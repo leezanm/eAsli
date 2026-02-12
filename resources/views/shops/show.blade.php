@@ -171,13 +171,14 @@
                             <!-- Action Button -->
                             <div class="md:col-span-2">
                                 <p class="md:hidden text-xs text-neutral-600 font-semibold mb-2">ACTION</p>
-                                @if(auth('web')->check())
-                                    <!-- Admin: Edit button -->
+                                @if(auth('artisan')->check() || auth('web')->check())
+                                    <!-- Artisan/Admin: Edit button -->
                                     <a href="{{ route('products.edit', $product) }}?shop_id={{ $shop->id }}" class="w-full inline-flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-yellow-500 to-yellow-600 text-white text-xs md:text-sm font-semibold shadow-md hover:from-yellow-600 hover:to-yellow-700 transition">
                                         <i class="fas fa-edit"></i>
                                         <span>Edit</span>
                                     </a>
                                 @else
+                                    <!-- Customer/Guest: Add to cart button -->
                                     {{-- @if(auth('customer')->check()) --}}
                                         @if($product->stock > 0)
                                             <form method="POST" action="{{ route('cart.add', $product) }}" class="w-full">
