@@ -39,12 +39,63 @@
                     </div>
                 <?php endif; ?>
 
-                <form method="POST" action="<?php echo e(isset($product) ? route('products.update', $product) : route('products.store')); ?>" enctype="multipart/form-data">
+                <form method="POST" action="<?php echo e(isset($product) ? (isset($shopId) && $shopId ? route('products.update', $product) . '?shop_id=' . $shopId : route('products.update', $product)) : route('products.store')); ?>" enctype="multipart/form-data">
                     <?php echo csrf_field(); ?>
                     <?php if(isset($product)): ?> <?php echo method_field('PUT'); ?> <?php endif; ?>
 
+                    <?php if(isset($shopId) && $shopId): ?>
+                        <input type="hidden" name="shop_id" value="<?php echo e($shopId); ?>">
+                    <?php endif; ?>
+
                     <?php if(!isset($product) && auth('artisan')->check()): ?>
                         <input type="hidden" name="artisan_id" value="<?php echo e(auth('artisan')->id()); ?>">
+                    <?php elseif(!isset($product) && auth('web')->check()): ?>
+                        <!-- Admin creating new product - select artisan -->
+                        <div class="mb-6">
+                            <label for="artisan_id" class="block text-sm font-bold text-primary-900 mb-2 uppercase tracking-wide">
+                                <i class="fas fa-user-tie text-primary-600 mr-2"></i>Select Artisan *
+                            </label>
+                            <select id="artisan_id" name="artisan_id"
+                                    class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg focus:border-primary-500 focus:ring-2 focus:ring-primary-200 outline-none transition text-neutral-900 font-medium <?php $__errorArgs = ['artisan_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> border-red-500 <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>"
+                                    required>
+                                <option value="">Select an artisan</option>
+                                <?php $__currentLoopData = \App\Models\Artisan::where('status', 'active')->orderBy('name')->get(); $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $artisan): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <option value="<?php echo e($artisan->id); ?>" <?php echo e(old('artisan_id') == $artisan->id ? 'selected' : ''); ?>>
+                                        <?php echo e($artisan->name); ?>
+
+                                    </option>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                            </select>
+                            <?php $__errorArgs = ['artisan_id'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                <span class="text-red-600 text-sm mt-1 flex items-center"><i class="fas fa-exclamation-circle mr-1"></i><?php echo e($message); ?></span>
+                            <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                        </div>
+                    <?php elseif(isset($product)): ?>
+                        <!-- Show artisan info when editing -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-bold text-primary-900 mb-2 uppercase tracking-wide">
+                                <i class="fas fa-user-tie text-primary-600 mr-2"></i>Artisan
+                            </label>
+                            <div class="w-full px-4 py-3 border-2 border-neutral-300 rounded-lg bg-neutral-100 text-neutral-700 font-medium">
+                                <?php echo e($product->artisan->name ?? 'N/A'); ?>
+
+                            </div>
+                            <input type="hidden" name="artisan_id" value="<?php echo e($product->artisan_id); ?>">
+                        </div>
                     <?php endif; ?>
 
                     <div class="mb-6">
@@ -291,7 +342,7 @@ unset($__errorArgs, $__bag); ?>
                             <i class="fas fa-save mr-2"></i><?php echo e(isset($product) ? 'Save Changes' : 'Create Product'); ?>
 
                         </button>
-                        <a href="<?php echo e(route('products.index')); ?>" class="flex-1 bg-neutral-300 hover:bg-neutral-400 text-neutral-800 font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105 duration-300 uppercase tracking-wide text-center">
+                        <a href="<?php echo e(isset($shopId) && $shopId ? route('shops.show', $shopId) : route('products.index')); ?>" class="flex-1 bg-neutral-300 hover:bg-neutral-400 text-neutral-800 font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105 duration-300 uppercase tracking-wide text-center">
                             <i class="fas fa-times mr-2"></i>Cancel
                         </a>
                     </div>

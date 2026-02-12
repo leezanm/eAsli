@@ -40,9 +40,13 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ isset($product) ? route('products.update', $product) : route('products.store') }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ isset($product) ? (isset($shopId) && $shopId ? route('products.update', $product) . '?shop_id=' . $shopId : route('products.update', $product)) : route('products.store') }}" enctype="multipart/form-data">
                     @csrf
                     @if(isset($product)) @method('PUT') @endif
+
+                    @if(isset($shopId) && $shopId)
+                        <input type="hidden" name="shop_id" value="{{ $shopId }}">
+                    @endif
 
                     @if(!isset($product) && auth('artisan')->check())
                         <input type="hidden" name="artisan_id" value="{{ auth('artisan')->id() }}">
@@ -224,7 +228,7 @@
                         <button type="submit" class="flex-1 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105 duration-300 uppercase tracking-wide text-center">
                             <i class="fas fa-save mr-2"></i>{{ isset($product) ? 'Save Changes' : 'Create Product' }}
                         </button>
-                        <a href="{{ route('products.index') }}" class="flex-1 bg-neutral-300 hover:bg-neutral-400 text-neutral-800 font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105 duration-300 uppercase tracking-wide text-center">
+                        <a href="{{ isset($shopId) && $shopId ? route('shops.show', $shopId) : route('products.index') }}" class="flex-1 bg-neutral-300 hover:bg-neutral-400 text-neutral-800 font-bold py-3 px-4 rounded-lg shadow-lg hover:shadow-xl transition transform hover:scale-105 duration-300 uppercase tracking-wide text-center">
                             <i class="fas fa-times mr-2"></i>Cancel
                         </a>
                     </div>

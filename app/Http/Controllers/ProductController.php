@@ -120,8 +120,11 @@ class ProductController extends Controller
             abort(403);
         }
 
+        // Get shop_id from query parameter if provided
+        $shopId = request('shop_id');
+
         // Show the same form used for creation, pre-filled with product data
-        return view('products.form', compact('product'));
+        return view('products.form', compact('product', 'shopId'));
     }
 
     public function update(Request $request, Product $product)
@@ -166,6 +169,13 @@ class ProductController extends Controller
         }
 
         $product->update($validated);
+
+        // If shop_id is provided, redirect back to shop page
+        $shopId = request('shop_id');
+        if ($shopId) {
+            return redirect()->route('shops.show', $shopId)->with('success', 'Product updated successfully');
+        }
+
         return redirect()->route('products.show', $product)->with('success', 'Product updated successfully');
     }
 
