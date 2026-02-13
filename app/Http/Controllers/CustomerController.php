@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $totalCustomers = Customer::count();
         $topCustomersCount = Customer::has('sales', '>=', 5)->count();
@@ -25,14 +25,31 @@ class CustomerController extends Controller
             ->havingRaw('sales_sum_total_price > 0')
             ->avg('sales_sum_total_price') ?? 0;
 
-        $customers = Customer::all();
+        // Check for filter parameter
+        $filter = $request->query('filter', 'all');
+
+        if ($filter === 'top') {
+            // Fetch only top customers with pagination
+            $customers = Customer::has('sales', '>=', 5)
+                ->withSum('sales', 'total_price')
+                ->withCount('sales')
+                ->orderByDesc('sales_sum_total_price')
+                ->paginate(10);
+        } else {
+            // Fetch all customers with pagination
+            $customers = Customer::withSum('sales', 'total_price')
+                ->withCount('sales')
+                ->orderByDesc('created_at')
+                ->paginate(10);
+        }
+
         $averageOrders = Customer::withCount('sales')
             ->havingRaw('sales_count > 0')
             ->avg('sales_count') ?? 0;
 
         return view('customers.index', compact(
             'totalCustomers', 'topCustomersCount', 'topCustomers',
-            'averageSpend', 'averageOrders', 'customers'
+            'averageSpend', 'averageOrders', 'customers', 'filter'
         ));
     }
 
